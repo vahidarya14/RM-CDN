@@ -1,0 +1,22 @@
+syntax = "proto3";
+option csharp_namespace = "CDN9.Protos";
+package greet;
+
+
+service Uploader {
+
+  rpc Upload (FileUploadRequest) returns (UploaderRepsponse);
+}
+
+message FileUploadRequest {
+    string Name = 1;
+    string Folder =3;
+    string ContentType=4;
+    bytes Bytes = 2;
+}
+message UploaderRepsponse {
+   bool IsSuccess = 1;
+   string Msg =2;
+   string FileName=3;
+   string PhisicalUploadedPath=4;
+}

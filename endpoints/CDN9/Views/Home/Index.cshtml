@@ -1,0 +1,106 @@
+﻿@using CDN9.Core.Application
+@inject IWebHostEnvironment hostEnvironment;
+@model (List<D> Dires, List<D> files)
+@{
+    var baseurl = "home";
+}
+
+<input id="fullPathOffile" class="d-none" type="file" />
+@* <div class="row justify-content-center">
+	<div class="col-8">
+		<input id="fullPathOfDir" class="form-control text-left ltr" readonly />
+	</div>
+</div> *@
+<div class="container-fluid fm_sidebar overflow-hidden">
+    <div class="row" style="height:100vh;">
+        <div class="col-4 col-lg-3 position-relative border-end" >
+            <div class="border-bottom py-2">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" onclick="addDirectoryModal('','','mainDirecories')" class="btn btn-outline-dark ">➕Directory</button>
+                    @*    <button type="button" class="btn btn-outline-dark ">Middle</button>
+                <button type="button" class="btn btn-outline-dark ">Right</button> *@
+                </div>
+            </div>
+            <div class="mainDirecories content-part">
+                @for (var i = 0; i < Model.Dires.Count; i++)
+                {
+                    var item = Model.Dires[i];
+                    <div class="" style="display:inline-flex">
+                        <label class="p-2 folder d_@i" onclick="loadSub(@i,'@item.Path')">@item.Text</label>
+                        <div class="dropdown">
+                            <button class="btn btn-link btn-sm" type="button" data-bs-toggle="dropdown">
+                                ⋮
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" onclick="uploadFile('@item.Path','/','dir_@i')" href="#">📤Upload File</a></li>
+                                <li><a class="dropdown-item" onclick="addDirectoryModal('@item.Path','@item.Text','dir_@i')" href="#">➕Sub Directory</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" onclick="removeDir('@item.Path','/','dir_@i')" href="#">🗑️Remove</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="dir_@i" class="ms-3">
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-8 col-lg-9 position-relative">
+            <div class="border-bottom pt-2 pb-3">
+                <label style="white-space: nowrap;">
+                    <input type="checkbox" id="check_all_file" onchange="togglecheckAllByClass()" />
+                    All
+                </label>
+                <button class="btn btn-outline-dark  btn-sm float-end me-4" id="select_all_and_close" onclick="getSelectedFilesandPushToParent()">push to parent ✔</button>
+            </div>
+            <div id="files_" class="ml-3 content-part">
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+<input type="file" id="lastuploadFileInput" multiple onchange="uploadfileToServer()" class="d-none" />
+
+<div class="modal" tabindex="-1" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-1" id="showModal">
+            </div>
+            @*<div class="modal-footer">
+			</div> *@
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/site.js"></script>
+    <script>
+        function uploadfileToServer() {
+
+            var e = $("#lastuploadFileInput")[0];
+            var formData = new FormData();
+            formData.append("__RequestVerificationToken", $("[name='__RequestVerificationToken']").val());
+            formData.append("folder", _lastuploadFilePath.path);
+            for (let i = 0; i < e.files.length; i++)
+                formData.append(`formFile${i}`, e.files[i]);
+
+            $.ajax({
+                type: "POST",
+                url: "@Html.Raw(Url.Action("Upload", baseurl))",
+                data: formData,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                success: function (res) {
+                    loadSub(_lastuploadFilePath.i0, _lastuploadFilePath.path);
+                    _lastuploadFilePath = "";
+                }
+            });
+        }
+    </script>
+}
+
+

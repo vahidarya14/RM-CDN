@@ -1,0 +1,57 @@
+﻿html {
+  font-size: 14px;
+}
+
+
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 0px;
+}
+
+label {
+    font-weight: normal !important
+}
+
+.folder:not(.open)::before {
+    content: "  📁";
+}
+
+.folder.open::before {
+    content: "📂▼";
+}
+
+.badge-length {
+    background: yellow;
+    border-radius: 4px;
+}
+
+.content-part {
+    position: absolute;
+    overflow: overlay;
+    bottom: 0;
+    top: 44px;
+    left: 0;
+    width: 99%;
+}
+
+::-webkit-scrollbar {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 2px;
+}
+
+.modal-header{
+    border-bottom:none;
+}
