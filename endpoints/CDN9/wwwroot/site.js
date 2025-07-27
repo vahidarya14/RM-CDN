@@ -98,7 +98,7 @@ function loadSub(i0, d) {
     lastFolder = d;
     $("#fullPathOfDir").val(d);
     $("#files_").html('<div class="spinner-border" role="status"></div>');
-    $.get(`/${baseurl}/SubDir?d=` + d, function (data, status) {
+    $.get(`/${baseurl}/SubDir?d=` + d + "&search=" + $('#search_files').val(), function (data, status) {
 
         lastFiles = data.files;
         let html = '';
@@ -106,7 +106,7 @@ function loadSub(i0, d) {
             let j = i;
             html += `<div class="">
                                 <div class=""  style="display:inline-flex">
-                                    <label class="p-2 folder d_${i0}_${j}" onclick="loadSub('${i0}_${j}','${data.dirs[j].path}')">${data.dirs[j].text}</label>
+                                    <label class="p-2 folder d_${i0}_${j}" onclick="$('#search_files').val('');loadSub('${i0}_${j}','${data.dirs[j].path}')">${data.dirs[j].text}</label>
                                     <div class="dropdown">
                                         <button class="btn btn-link btn-sm" type="button"  data-bs-toggle="dropdown" >
                                             ⋮

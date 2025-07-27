@@ -9,7 +9,37 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                       Channel<NewFileUploaded> _notificator,
                       NewFileUploadedRepository newFileUploadedRepository)
 {
-    public (List<D> dirs, List<D> files) SubDir(string d, string tenantFolder)
+    public (List<D> dirs, List<D> files) SubDir(string d, string tenantFolder, string? search)
+    {
+
+        string rootPath = $"{host.WebRootPath}{tenantFolder}";
+
+        if (!string.IsNullOrEmpty(search))
+        {
+            List<D> allFiles = [];
+
+            var (allDirs2, allFiles2) = SubDir2($"", tenantFolder);
+            allFiles.AddRange(allFiles2.Where(x => x.Path.Contains(search)));
+            foreach (var dir in allDirs2)
+            {
+                var (allDirs3, allFiles3) = SubDir2($"{dir.Path}", tenantFolder);
+                allFiles.AddRange(allFiles3.Where(x => x.Path.ToLower().Contains(search.ToLower())));
+
+
+                foreach (var dir2 in allDirs3)
+                {
+                    var (allDirs4, allFiles4) = SubDir2($"{dir2.Path}", tenantFolder);
+                    allFiles.AddRange(allFiles4.Where(x => x.Path.ToLower().Contains(search.ToLower())));
+                }
+            }
+
+            return (dirs: allDirs2, files: allFiles);
+        }
+
+
+        return SubDir2(d, tenantFolder);
+    }
+    (List<D> dirs, List<D> files) SubDir2(string d, string tenantFolder)
     {
 
         string rootPath = $"{host.WebRootPath}{tenantFolder}";
@@ -86,7 +116,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
 
                 await using FileStream stream = new(destinationFile, FileMode.OpenOrCreate);
                 await formFile.CopyToAsync(stream, ct);
-            }               
+            }
 
 
             mirrors.CurrentValue.ForEach(async x =>
@@ -96,14 +126,14 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                     CndHost = x,
                     Folder = folder,
                     Name = $"{fileName}",
-                    ContentType= formFile.ContentType
+                    ContentType = formFile.ContentType
                 });
             });
 
             res.Add(new UploadRes(true, "", fileName, location));
         }
 
-        
+
 
         return res;
     }

@@ -11,12 +11,12 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
 
     public async Task<IActionResult> IndexAsync()
     {
-        return View(fileMgmt.SubDir("", tenantFolder));
+        return View(fileMgmt.SubDir("", tenantFolder,null));
     }
 
-    public IActionResult SubDir(string d)
+    public IActionResult SubDir(string d, string? search)
     {
-        var dirsFiles = fileMgmt.SubDir(d, tenantFolder);
+        var dirsFiles = fileMgmt.SubDir(d, tenantFolder,search);
 
         return Json(new
         {
@@ -29,7 +29,7 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
     public IActionResult CreateDir(string d, string name)
     {
         var dirs = Directory.CreateDirectory($"{rootPath}/{d}/{name}");
-        return SubDir(d);
+        return SubDir(d,null);
     }
 
     [HttpPost]

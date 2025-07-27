@@ -46,11 +46,23 @@
         </div>
         <div class="col-8 col-lg-9 position-relative">
             <div class="border-bottom pt-2 pb-3">
-                <label style="white-space: nowrap;">
-                    <input type="checkbox" id="check_all_file" onchange="togglecheckAllByClass()" />
-                    All
-                </label>
-                <button class="btn btn-outline-dark  btn-sm float-end me-4" id="select_all_and_close" onclick="getSelectedFilesandPushToParent()">push to parent ✔</button>
+                <div class="row">
+                    <div class="col">
+                        <label style="white-space: nowrap;">
+                            <input type="checkbox" id="check_all_file" onchange="togglecheckAllByClass()" />
+                            All
+                        </label>
+                    </div>
+                    <div class="col">
+                        <div class="input-group">
+                            <input type="text" id="search_files" class="form-control" placeholder="search...">
+                            <button class="btn btn-outline-primary btn-sm input-group-text" onclick="loadSub('','')">🔍</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-outline-dark  btn-sm float-end me-4" id="select_all_and_close" onclick="getSelectedFilesandPushToParent()">push to parent ✔</button>
+                    </div>
+                </div>
             </div>
             <div id="files_" class="ml-3 content-part">
             </div>
