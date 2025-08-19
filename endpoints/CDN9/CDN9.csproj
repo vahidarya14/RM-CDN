@@ -24,4 +24,8 @@
 	<ItemGroup>
 		<Protobuf Include="Protos\greet.proto" GrpcServices="Both" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\tenant1\" />
+	</ItemGroup>
 </Project>
