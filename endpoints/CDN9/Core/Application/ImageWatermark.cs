@@ -38,15 +38,15 @@ public static class ImageWatermark
         g.Clear(Color.White);
 
         // Draw the source image
-        g.DrawImage(sourceImage, 0, 0);
+        g.DrawImage(sourceImage, 0, 0,sourceImage.Width, sourceImage.Height);
 
         //// Calculate watermark position (center)
         //int x = (watermarkedImage.Width - watermarkImage.Width) /20;
         //int y = (watermarkedImage.Height - watermarkImage.Height) /20;
 
         ////Calculate watermark position (bottom right)
-        int x = (watermarkedImage.Width - watermarkImage.Width) - 20;
-        int y = (watermarkedImage.Height - watermarkImage.Height) - 20;
+        int x = watermarkedImage.Width - watermarkImage.Width - (watermarkImage.Width/2);
+        int y = watermarkedImage.Height - watermarkImage.Height - (watermarkImage.Height/2);
 
         // Draw the watermark image
         g.DrawImage(watermarkImage, x, y);
