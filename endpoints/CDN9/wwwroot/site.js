@@ -1,4 +1,5 @@
 ﻿var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
 var lastFolder = "";
 var lastFiles = [];
 var baseurl = "home";
@@ -8,7 +9,6 @@ var icon_doc='📄';
 var icon_zip='🗜';
 var icon_audio='🔊';
 var icon_unknown='⛘';
-
 
 function showFile2(path, title, extension) {
 
@@ -104,6 +104,7 @@ function loadSub(i0, d) {
         let html = '';
         for (let i = 0; i < data.dirs.length; i++) {
             let j = i;
+            debugger
             html += `<div class="">
                                 <div class=""  style="display:inline-flex">
                                     <label class="p-2 folder d_${i0}_${j}" onclick="$('#search_files').val('');loadSub('${i0}_${j}','${data.dirs[j].path}')">${data.dirs[j].text}</label>
@@ -112,7 +113,7 @@ function loadSub(i0, d) {
                                             ⋮
                                         </button>
                                         <ul class="dropdown-menu" >
-                                            <li><a class="dropdown-item" onclick="uploadFile('${data.dirs[j].path}','${d}','${i0}_${j}')" href="#">📤Upload File</a></li>
+                                            <li><a class="dropdown-item" onclick="showUploadModal('${data.dirs[j].path}','${d}','${i0}_${j}')" href="#">📤Upload File</a></li>
                                             <li><a class="dropdown-item" onclick="addDirectoryModal('${data.dirs[j].path}','${data.dirs[j].text}','${i0}_${j}')" href="#">➕Sub Directory</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" onclick="removeDir('${data.dirs[j].path}','${d}','${i0}')" href="#">🗑️Remove</a></li>
@@ -142,6 +143,15 @@ function loadSub(i0, d) {
                                         ${f.text}
                                    </label>
                                    <small style="background: yellow;">(${f.length})</small>
+                                   <div class="dropdown">
+                                        <button class="btn btn-link btn-sm" type="button"  data-bs-toggle="dropdown" >
+                                            ⋮
+                                        </button>
+                                        <ul class="dropdown-menu" >
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" onclick="removeFile('${f.path}')" href="#">🗑️Remove</a></li>
+                                        </ul>
+                                    </div>
                               </div>
                           </div>`;
         }
@@ -205,7 +215,11 @@ function togglecheckAllByClass() {
 }
 
 var _lastuploadFilePath;
-function uploadFile(path, d, i0) {
+//function uploadFile(path, d, i0) {
+//    _lastuploadFilePath = { path, d, i0 };
+//    document.getElementById('lastuploadFileInput').click();
+//}
+function showUploadModal(path, d, i0) {
     _lastuploadFilePath = { path, d, i0 };
-    document.getElementById('lastuploadFileInput').click();
+    uploadModal.show();
 }

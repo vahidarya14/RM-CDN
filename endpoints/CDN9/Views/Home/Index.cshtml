@@ -13,7 +13,7 @@
 </div> *@
 <div class="container-fluid fm_sidebar overflow-hidden">
     <div class="row" style="height:100vh;">
-        <div class="col-4 col-lg-3 position-relative border-end" >
+        <div class="col-4 col-lg-3 position-relative border-end">
             <div class="border-bottom py-2" style="margin-left:-11px;margin-right:-11px;">
                 <div class="btn-group btn-group-sm" role="group">
                     <button type="button" onclick="addDirectoryModal('','','mainDirecories')" class="btn btn-outline-dark ">➕Directory</button>
@@ -32,7 +32,7 @@
                                 ⋮
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" onclick="uploadFile('@item.Path','/','dir_@i')" href="#">📤Upload File</a></li>
+                                <li><a class="dropdown-item" onclick="showUploadModal('@item.Path','/','dir_@i')" href="#">📤Upload File</a></li>
                                 <li><a class="dropdown-item" onclick="addDirectoryModal('@item.Path','@item.Text','dir_@i')" href="#">➕Sub Directory</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" onclick="removeDir('@item.Path','/','dir_@i')" href="#">🗑️Remove</a></li>
@@ -70,8 +70,7 @@
     </div>
 </div>
 
-@Html.AntiForgeryToken()
-<input type="file" id="lastuploadFileInput" multiple onchange="uploadfileToServer()" class="d-none" />
+
 
 <div class="modal" tabindex="-1" id="myModal">
     <div class="modal-dialog">
@@ -88,6 +87,37 @@
     </div>
 </div>
 
+
+<div class="modal" tabindex="-1" id="uploadModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body ">
+                @Html.AntiForgeryToken()
+              
+                <div class="mb-3">
+                    <input type="file" id="lastuploadFileInput" multiple  class="form-control" />
+                </div>
+
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" name="change_img_format">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">change image format to .webp</label>
+                </div>
+
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" name="add_avatar_to_img">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">add avatar to image</label>
+                </div>
+
+                <button class="btn btn-primary" onclick="uploadfileToServer()">📤Upload File</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="/site.js"></script>
     <script>
@@ -100,6 +130,9 @@
             for (let i = 0; i < e.files.length; i++)
                 formData.append(`formFile${i}`, e.files[i]);
 
+            formData.append(`change_img_format`, $('[name=change_img_format]').is(':checked'));
+            formData.append(`add_avatar_to_img`, $('[name=add_avatar_to_img]').is(':checked'));
+
             $.ajax({
                 type: "POST",
                 url: "@Html.Raw(Url.Action("Upload", baseurl))",
@@ -109,6 +142,7 @@
                 success: function (res) {
                     loadSub(_lastuploadFilePath.i0, _lastuploadFilePath.path);
                     _lastuploadFilePath = "";
+                    document.getElementById('lastuploadFileInput').value= null;
                 }
             });
         }

@@ -1,5 +1,6 @@
 ﻿using CDN9.Core.Domain;
 using CDN9.Core.Infrestrucrure.Persistance;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Channels;
 
@@ -74,7 +75,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
     }
 
 
-    public async Task<List<UploadRes>> UploadFilesAsync(IFormFileCollection files, string rootPath, string folder, CancellationToken ct)
+    public async Task<List<UploadRes>> UploadFilesAsync(IFormFileCollection files, string rootPath, string folder, bool change_img_format, bool add_watermark, CancellationToken ct)
     {
 
         var path = $"{rootPath}/{folder}";
@@ -96,26 +97,29 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
             var fileN = span.Slice(0, fileName.LastIndexOf('.'));
             var fileExt = span.Slice(fileName.LastIndexOf('.'));
 
+            var isImageButNotWebp = formFile.ContentType.ToLower().Contains("image/") &&
+                                   !formFile.ContentType.ToLower().Contains("webp");
 
             var location = $"{path}/{fileName}";
-            if (formFile.ContentType.ToLower().Contains("image/") && !formFile.ContentType.ToLower().Contains("webp"))
+            if (isImageButNotWebp && change_img_format)
             {
                 await using MemoryStream ms = new();
                 await formFile.CopyToAsync(ms);
-                fileName = ImageWatermark.AddWatermarkAndSaveAsWebp(ms, $"{host.WebRootPath}/watermask.png", path, fileName);
+                if (add_watermark)
+                    fileName = ImageWatermark.AddWatermarkAndSaveAsWebp(ms, $"{host.WebRootPath}/watermask.png", path, fileName);
+                else
+                    fileName = ImageWatermark.SaveAsWebp(ms, path, fileName);
             }
             else
             {
-                var destinationFile = Path.Combine(path, fileName);
-                var i = 1;
-                while (File.Exists(destinationFile))
+                if (isImageButNotWebp && add_watermark)
                 {
-                    fileName = $"{fileN}{i++}{fileExt}";
-                    destinationFile = Path.Combine(path, fileName);
+                    await using MemoryStream ms = new();
+                    await formFile.CopyToAsync(ms);
+                    fileName = ImageWatermark.AddWatermark(ms, $"{host.WebRootPath}/watermask.png", path, fileName);
                 }
-
-                await using FileStream stream = new(destinationFile, FileMode.OpenOrCreate);
-                await formFile.CopyToAsync(stream, ct);
+                else
+                    fileName = await UploadAsOrginal(path, formFile, fileName, fileN.ToString(), fileExt.ToString(), ct);
             }
 
 
@@ -133,8 +137,21 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
             res.Add(new UploadRes(true, "", fileName, location));
         }
 
-
-
         return res;
+    }
+
+    private static async Task<string> UploadAsOrginal(string path, IFormFile formFile, string fileName, string fileN, string fileExt, CancellationToken ct)
+    {
+        var destinationFile = Path.Combine(path, fileName);
+        var i = 1;
+        while (File.Exists(destinationFile))
+        {
+            fileName = $"{fileN}{i++}{fileExt}";
+            destinationFile = Path.Combine(path, fileName);
+        }
+
+        await using FileStream stream = new(destinationFile, FileMode.OpenOrCreate);
+        await formFile.CopyToAsync(stream, ct);
+        return fileName;
     }
 }
