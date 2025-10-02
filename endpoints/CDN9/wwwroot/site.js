@@ -1,6 +1,7 @@
 ﻿var myModal = new bootstrap.Modal(document.getElementById('myModal'));
 var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
 var lastFolder = "";
+var lastI0 = 0;
 var lastFiles = [];
 var baseurl = "home";
 var icon_image='🖼️';
@@ -108,9 +109,10 @@ function renameFile(path, j) {
     $.post(`/${baseurl}/RenameFile`, { d: path, newName })
         .done(function () {
             myModal.hide();
-            debugger
-            $('#file_lbl_' + j).html(newName);
-            //loadSub(_lastuploadFilePath.path, _lastuploadFilePath.d)
+            
+            let _lastFolder = lastFolder;
+            lastFolder = "";
+            loadSub(lastI0, _lastFolder);
         })
         .fail(function (er) {
             alert(er["System.IO.IOException"]);
@@ -142,8 +144,10 @@ function loadSub(i0, d) {
     }
     $(`.d_${i0}`).addClass('open');
     lastFolder = d;
+    lastI0 = i0;
     $("#fullPathOfDir").val(d);
     $("#files_").html('<div class="spinner-border" role="status"></div>');
+    let isSearch = $('#search_files').val() != '';
     $.get(`/${baseurl}/SubDir?d=` + d + '&search='+$('#search_files').val(), function (data, status) {
 
         lastFiles = data.files;
@@ -178,16 +182,16 @@ function loadSub(i0, d) {
         for (let i = 0; i < data.files.length; i++) {
             let j = i;
             let f = data.files[j];
-            html += `<div id="file_${j}">
-                               <div class="py-1 px-2" style="display:inline-flex">
+            html += `<tr id="file_${j}">
+                               <td class="py-1 px-2" style="display:inline-flex">
                                    <label style='white-space: nowrap;'>
                                       <input type="checkbox" value='${f.path}' class="_files" />
                                       ${fileIcon(f.extension)}
                                    </label>
-                                   <label onclick="showFile2('${f.path}','${f.text}','${f.extension}')" id="file_lbl_${j}" >
+                                   <label onclick="showFile2('${f.path}','${f.text}','${f.extension}')" id="file_lbl_${j}" title="${f.path}" >
                                         ${f.text}
                                    </label>
-                                   <small style="background: yellow;">(${f.length})</small>
+                                   
                                    <div class="dropdown">
                                         <button class="btn btn-link btn-sm" type="button"  data-bs-toggle="dropdown" >
                                             ⋮
@@ -198,8 +202,9 @@ function loadSub(i0, d) {
                                             <li><a class="dropdown-item" onclick="removeFile('${f.path}',${j})" href="#">🗑️Remove</a></li>
                                         </ul>
                                     </div>
-                              </div>
-                          </div>`;
+                              </td>
+                              <td><small style="background: yellow;">(${f.length})</small></td>
+                     </tr>`;
         }
         if (data.files.length == 0)
             $("#files_").html(`<div class="ml-4 pb-2">--folder is empty--</div>`);
