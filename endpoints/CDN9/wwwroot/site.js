@@ -5,10 +5,15 @@ var lastFiles = [];
 var baseurl = "home";
 var icon_image='🖼️';
 var icon_video = '🎞️';
-var icon_doc='📄';
+var icon_txt='📄';
+var icon_doc = '📘';
 var icon_zip='🗜';
 var icon_audio='🔊';
 var icon_unknown='⛘';
+var icon_pdf = '📕';
+var icon_excel = '📗';
+var icon_powerpoint = '📙';
+var icon_exe ='⚙️'
 
 function showFile2(path, title, extension) {
 
@@ -139,7 +144,7 @@ function loadSub(i0, d) {
     lastFolder = d;
     $("#fullPathOfDir").val(d);
     $("#files_").html('<div class="spinner-border" role="status"></div>');
-    $.get(`/${baseurl}/SubDir?d=` + d, function (data, status) {
+    $.get(`/${baseurl}/SubDir?d=` + d + '&search='+$('#search_files').val(), function (data, status) {
 
         lastFiles = data.files;
         let html = '';
@@ -206,9 +211,14 @@ function loadSub(i0, d) {
 function fileIcon(extension) {
     if (extension.match(/\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i)) return icon_image;
     if (extension.match(/\.(mp4|m4a|avi|mov|f4v)$/i)) return icon_video;
-    if (extension.match(/\.(txt|docx|doc)$/i)) return icon_doc;
+    if (extension.match(/\.(docx|doc)$/i)) return icon_doc;
+    if (extension.match(/\.(xlsx|xls)$/i)) return icon_excel;
+    if (extension.match(/\.(pptx|ppt)$/i)) return icon_powerpoint;
+    if (extension.match(/\.(txt)$/i)) return icon_txt;
     if (extension.match(/\.(rar|zip|7zip)$/i)) return icon_zip;
     if (extension.match(/\.(mp3)$/i)) return icon_audio;
+    if (extension.match(/\.(pdf)$/i)) return icon_pdf;
+    if (extension.match(/\.(exe)$/i)) return icon_exe;
     return icon_unknown;
 }
 
