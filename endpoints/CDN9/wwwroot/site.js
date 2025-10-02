@@ -188,7 +188,7 @@ function loadSub(i0, d) {
                                       <input type="checkbox" value='${f.path}' class="_files" />
                                       ${fileIcon(f.extension)}
                                    </label>
-                                   <label onclick="showFile2('${f.path}','${f.text}','${f.extension}')" id="file_lbl_${j}" title="${f.path}" >
+                                   <label onclick="showFile2('${f.path}','${f.text}','${f.extension}')" id="file_lbl_${j}" title="(${f.length}) - ${f.path} " >
                                         ${f.text}
                                    </label>
                                    
@@ -197,13 +197,13 @@ function loadSub(i0, d) {
                                             ⋮
                                         </button>
                                         <ul class="dropdown-menu" >
-                                            <li><a class="dropdown-item" onclick="showRenameFileModal('${f.path}','${f.text}',${j})" href="#">✏️Rename</a></li>
+                                            <li><a class="dropdown-item" onclick="showRenameFileModal('${f.path}/${f.text}','${f.text}',${j})" href="#">✏️Rename</a></li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" onclick="removeFile('${f.path}',${j})" href="#">🗑️Remove</a></li>
+                                            <li><a class="dropdown-item" onclick="removeFile('${f.path}/${f.text}',${j})" href="#">🗑️Remove</a></li>
                                         </ul>
                                     </div>
                               </td>
-                              <td><small style="background: yellow;">(${f.length})</small></td>
+                              <td><small>${f.length}</small></td>
                      </tr>`;
         }
         if (data.files.length == 0)

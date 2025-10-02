@@ -56,10 +56,10 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
             //if (!Info.Exists) return null;
             return new D()
             {
-                Path = $"{tenantFolder}/{d}/{x.Substring(x.LastIndexOf('/') + 1)}",
+                Path = $"{tenantFolder}{d}",
                 Text = x.Substring(x.LastIndexOf('/') + 1),
                 IsReadOnly = Info.IsReadOnly,
-                Length = Info.Length < 1024 ? $"{Info.Length}B" : $"{Info.Length / 1024}Kb",
+                Length = Info.Length < 1024 ? $"{Info.Length}B" : Info.Length < 1_000_000?  $"{Info.Length / 1024}Kb": $"{Info.Length / 1000000}Mb",
                 Attributes = Info.Attributes,
                 Extension = Info.Extension,
                 UnixFileMode = Info.UnixFileMode,
