@@ -204,7 +204,7 @@ function loadSub(i0, d) {
 }
 
 function fileIcon(extension) {
-    if (extension.match(/\.(jpg|jpeg|png|gif|webp|bmp)$/i)) return icon_image;
+    if (extension.match(/\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i)) return icon_image;
     if (extension.match(/\.(mp4|m4a|avi|mov|f4v)$/i)) return icon_video;
     if (extension.match(/\.(txt|docx|doc)$/i)) return icon_doc;
     if (extension.match(/\.(rar|zip|7zip)$/i)) return icon_zip;
