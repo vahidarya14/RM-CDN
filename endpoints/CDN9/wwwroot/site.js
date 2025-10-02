@@ -84,8 +84,49 @@ function removeDir(path, parentD, divId) {
         });
 }
 
+function removeFile(path, j) {
+
+    $.post(`/${baseurl}/RemoveFile`, { d: path })
+        .done(function () {
+            $('#file_' + j).remove();
+            //loadSub(_lastuploadFilePath.path, _lastuploadFilePath.d)
+        })
+        .fail(function (er) {
+            alert(er["System.IO.IOException"]);
+        });
+}
+
+function renameFile(path, j) {
+
+    let newName = $("#file_name").val();
+
+    $.post(`/${baseurl}/RenameFile`, { d: path, newName })
+        .done(function () {
+            myModal.hide();
+            debugger
+            $('#file_lbl_' + j).html(newName);
+            //loadSub(_lastuploadFilePath.path, _lastuploadFilePath.d)
+        })
+        .fail(function (er) {
+            alert(er["System.IO.IOException"]);
+        });
+}
+
+function showRenameFileModal(path, name, j) {
+
+    $("#showModal").html(`
+               <div class="mb-3">
+                 <label for="exampleInputEmail1" class="form-label">Name</label>
+                 <input type="text" class="form-control" id="file_name" value='${name}' >
+               </div>
+               <button type="button" onclick="renameFile('${path}',${j})" class="btn btn-primary">Submit</button>
+            `)
+    $(".modal-title").html('');
+    myModal.show();
+}
+
 function loadSub(i0, d) {
-    debugger
+
     $(`.folder`).removeClass('open');
     if (lastFolder == d && d != '') {
         $(`#dir_${i0}`).html('');
@@ -98,30 +139,29 @@ function loadSub(i0, d) {
     lastFolder = d;
     $("#fullPathOfDir").val(d);
     $("#files_").html('<div class="spinner-border" role="status"></div>');
-    $.get(`/${baseurl}/SubDir?d=` + d + "&search=" + $('#search_files').val(), function (data, status) {
+    $.get(`/${baseurl}/SubDir?d=` + d, function (data, status) {
 
         lastFiles = data.files;
         let html = '';
         for (let i = 0; i < data.dirs.length; i++) {
             let j = i;
-            debugger
             html += `<div class="">
-                                <div class=""  style="display:inline-flex">
-                                    <label class="p-2 folder d_${i0}_${j}" onclick="$('#search_files').val('');loadSub('${i0}_${j}','${data.dirs[j].path}')">${data.dirs[j].text}</label>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link btn-sm" type="button"  data-bs-toggle="dropdown" >
-                                            ⋮
-                                        </button>
-                                        <ul class="dropdown-menu" >
-                                            <li><a class="dropdown-item" onclick="showUploadModal('${data.dirs[j].path}','${d}','${i0}_${j}')" href="#">📤Upload File</a></li>
-                                            <li><a class="dropdown-item" onclick="addDirectoryModal('${data.dirs[j].path}','${data.dirs[j].text}','${i0}_${j}')" href="#">➕Sub Directory</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" onclick="removeDir('${data.dirs[j].path}','${d}','${i0}')" href="#">🗑️Remove</a></li>
-                                        </ul>
-                                    </div>
+                            <div class=""  style="display:inline-flex;white-space: nowrap;">
+                                <div class="dropdown">
+                                    <button class="btn btn-link btn-sm" type="button"  data-bs-toggle="dropdown" >
+                                        ⋮
+                                    </button>
+                                    <ul class="dropdown-menu" >
+                                        <li><a class="dropdown-item" onclick="uploadFile('${data.dirs[j].path}','${d}','${i0}_${j}')" href="#">📤Upload File</a></li>
+                                        <li><a class="dropdown-item" onclick="addDirectoryModal('${data.dirs[j].path}','${data.dirs[j].text}','${i0}_${j}')" href="#">➕Sub Directory</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" onclick="removeDir('${data.dirs[j].path}','${d}','${i0}')" href="#">🗑️Remove</a></li>
+                                    </ul>
                                 </div>
-                                <div id="dir_${i0}_${j}" class="ml-3 ms-3" style="" > </div>
-                            </div>`;
+                                <label class="p-2 folder d_${i0}_${j}" onclick="loadSub('${i0}_${j}','${data.dirs[j].path}')">${data.dirs[j].text}</label>
+                            </div>
+                            <div id="dir_${i0}_${j}" class="ml-3 ms-3" style="" > </div>
+                        </div>`;
         }
         if (d == '' || d == '/')
             $(".mainDirecories").html(html);
@@ -133,13 +173,13 @@ function loadSub(i0, d) {
         for (let i = 0; i < data.files.length; i++) {
             let j = i;
             let f = data.files[j];
-            html += `<div class="">
+            html += `<div id="file_${j}">
                                <div class="py-1 px-2" style="display:inline-flex">
                                    <label style='white-space: nowrap;'>
                                       <input type="checkbox" value='${f.path}' class="_files" />
                                       ${fileIcon(f.extension)}
                                    </label>
-                                   <label onclick="showFile2('${f.path}','${f.text}','${f.extension}')" >
+                                   <label onclick="showFile2('${f.path}','${f.text}','${f.extension}')" id="file_lbl_${j}" >
                                         ${f.text}
                                    </label>
                                    <small style="background: yellow;">(${f.length})</small>
@@ -148,8 +188,9 @@ function loadSub(i0, d) {
                                             ⋮
                                         </button>
                                         <ul class="dropdown-menu" >
+                                            <li><a class="dropdown-item" onclick="showRenameFileModal('${f.path}','${f.text}',${j})" href="#">✏️Rename</a></li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" onclick="removeFile('${f.path}')" href="#">🗑️Remove</a></li>
+                                            <li><a class="dropdown-item" onclick="removeFile('${f.path}',${j})" href="#">🗑️Remove</a></li>
                                         </ul>
                                     </div>
                               </div>

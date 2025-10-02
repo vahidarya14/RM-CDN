@@ -26,7 +26,6 @@
                 {
                     var item = Model.Dires[i];
                     <div class="" style="display:inline-flex">
-                        <label class="p-2 folder d_@i" onclick="loadSub(@i,'@item.Path')">@item.Text</label>
                         <div class="dropdown">
                             <button class="btn btn-link btn-sm" type="button" data-bs-toggle="dropdown">
                                 ⋮
@@ -38,6 +37,7 @@
                                 <li><a class="dropdown-item" onclick="removeDir('@item.Path','/','dir_@i')" href="#">🗑️Remove</a></li>
                             </ul>
                         </div>
+                        <label class="p-2 folder d_@i" onclick="loadSub(@i,'@item.Path')">@item.Text</label>
                     </div>
                     <div id="dir_@i" class="ms-3">
                     </div>
