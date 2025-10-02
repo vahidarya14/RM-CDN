@@ -46,6 +46,34 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
         }
     }
 
+    [HttpPost]
+    public IActionResult RemoveFile(string d)
+    {
+        try
+        {
+            System.IO.File.Delete($"{host.WebRootPath}/{d}");
+            return Ok(new { d });
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    [HttpPost]
+    public IActionResult RenameFile(string d, string newName)
+    {
+        try
+        {
+            var subDir = d.Substring(0, d.LastIndexOf('/'));
+            System.IO.File.Move($"{host.WebRootPath}/{d}", $"{host.WebRootPath}/{subDir}/{newName}");
+            return Ok(new { d });
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 
     [RequestSizeLimit(long.MaxValue)]
     public async Task<ActionResult<UploadRes>> UploadAsync([FromForm] string folder, [FromForm] bool change_img_format, [FromForm] bool add_watermask_to_img, CancellationToken ct)

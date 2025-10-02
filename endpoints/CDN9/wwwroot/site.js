@@ -152,7 +152,7 @@ function loadSub(i0, d) {
                                         ⋮
                                     </button>
                                     <ul class="dropdown-menu" >
-                                        <li><a class="dropdown-item" onclick="uploadFile('${data.dirs[j].path}','${d}','${i0}_${j}')" href="#">📤Upload File</a></li>
+                                        <li><a class="dropdown-item" onclick="showUploadModal('${data.dirs[j].path}','${d}','${i0}_${j}')" href="#">📤Upload File</a></li>
                                         <li><a class="dropdown-item" onclick="addDirectoryModal('${data.dirs[j].path}','${data.dirs[j].text}','${i0}_${j}')" href="#">➕Sub Directory</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" onclick="removeDir('${data.dirs[j].path}','${d}','${i0}')" href="#">🗑️Remove</a></li>
