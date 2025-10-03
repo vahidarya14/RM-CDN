@@ -45,9 +45,9 @@
             </div>
         </div>
         <div class="col-8 col-lg-9 position-relative"  >
-            <div class="border-bottom pt-2 px-2" style="margin-left:-11px;margin-right:-11px;">
+            <div class="border-bottom pt-1 px-2" style="margin-left:-11px;margin-right:-11px;padding-bottom: 3px;">
                 <div class="row">
-                    <div class="col">
+                    <div class="col-2 pt-2">
                         <label style="white-space: nowrap;">
                             <input type="checkbox" id="check_all_file" onchange="togglecheckAllByClass()" />
                             All
@@ -56,11 +56,13 @@
                     <div class="col">
                         <div class="input-group">
                             <input type="text" id="search_files" class="form-control" placeholder="search...">
-                            <button class="btn btn-outline-primary btn-sm input-group-text" onclick="loadSub('','')">🔍</button>
+                            <button class="btn btn-outline-secondary btn-sm input-group-text" onclick="loadSub('','')">🔍</button>
+                            <button class="btn btn-outline-secondary btn-sm input-group-text mx-1" onclick="showUploadModal(lastFolder,'/','dir_'+lastI0)">📤</button>
+                            <button class="btn btn-outline-secondary btn-sm input-group-text" onclick="addDirectoryModal(lastFolder,lastFolder,'dir_'+lastI0)">➕</button>
                         </div>
                     </div>
-                    <div class="col">
-                        <button class="btn btn-outline-dark  btn-sm float-end me-4" id="select_all_and_close" onclick="getSelectedFilesandPushToParent()">push to parent ✔</button>
+                    <div class="col pt-2">
+                        <button class="btn btn-outline-dark  btn-sm float-end me-4" id="select_all_and_close" onclick="getSelectedFilesandPushToParent()">push up ✔</button>
                     </div>
                 </div>
             </div>

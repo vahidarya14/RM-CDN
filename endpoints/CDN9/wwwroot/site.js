@@ -20,27 +20,27 @@ function showFile2(path, title, extension) {
 
     extension = fileIcon(extension.toLowerCase());
     debugger
-
+    let fullPath = path + '/' + title;
 
     $("#showModal").html(`<div class="mb-2 pb-1 px-2 text-left border-bottom">
-                            <button onclick="prevFile('${path}')" class="btn btn-warning mr-1" style="margin-right:2px" ><</label>
-                            <button onclick="nextFile('${path}')" class="btn btn-warning " >></label>
-                            <button onclick="pushSelectedfilesToParent('${path}')" class="btn btn-warning float-right" style="float:right" >✔</button>
+                            <button onclick="prevFile('${fullPath}')" class="btn btn-warning mr-1" style="margin-right:2px" ><</label>
+                            <button onclick="nextFile('${fullPath}')" class="btn btn-warning " >></label>
+                            <button onclick="pushSelectedfilesToParent('${fullPath}')" class="btn btn-warning float-right" style="float:right" >✔</button>
                         </div>`);
 
     if (extension == icon_audio) {
         $("#showModal").append(`<audio controls class="w-100">
-                                          <source src="${path}" type="audio/ogg">
-                                          <source src="${path}" type="audio/mpeg">
+                                          <source src="${fullPath}" type="audio/ogg">
+                                          <source src="${fullPath}" type="audio/mpeg">
                                           Your browser does not support the audio element.
                                       </audio>`);
     }   
     else if (extension == icon_image) {
-        $("#showModal").append(`<img src="${path}" style="max-width: 100%;" />`);
+        $("#showModal").append(`<img src="${fullPath}" style="max-width: 100%;" />`);
     }
     else {
-        $("#showModal").append(`<span>${path}</span><br />
-                                <a href="${path}" target="_blank">download</a>`);
+        $("#showModal").append(`<span>${fullPath}</span><br />
+                                <a href="${fullPath}" target="_blank">download</a>`);
     }
 
     $(".modal-title").html(title);
@@ -185,7 +185,7 @@ function loadSub(i0, d) {
             html += `<tr id="file_${j}">
                                <td class="py-1 px-2" style="display:inline-flex">
                                    <label style='white-space: nowrap;'>
-                                      <input type="checkbox" value='${f.path}' class="_files" />
+                                      <input type="checkbox" value='${f.path}/${f.text}' class="_files" />
                                       ${fileIcon(f.extension)}
                                    </label>
                                    <label onclick="showFile2('${f.path}','${f.text}','${f.extension}')" id="file_lbl_${j}" title="(${f.length}) - ${f.path} " >
