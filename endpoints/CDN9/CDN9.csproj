@@ -28,4 +28,8 @@
 	<ItemGroup>
 	  <Folder Include="wwwroot\tenant1\" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\..\_libs\ServiceDefaults\ServiceDefaults.csproj" />
+	</ItemGroup>
 </Project>
