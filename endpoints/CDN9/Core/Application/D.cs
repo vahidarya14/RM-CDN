@@ -1,4 +1,7 @@
-﻿namespace CDN9.Core.Application;
+﻿using System.Text;
+using System.Text.RegularExpressions;
+
+namespace CDN9.Core.Application;
 
 public record D
 {

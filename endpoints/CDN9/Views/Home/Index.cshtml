@@ -118,6 +118,11 @@
                     <img src="/watermask.png" />
                 </div>
 
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" name="make_sm_img_too">
+                    <label class="form-check-label" for="make_sm_img_too">make_sm_img_too</label>
+                </div>
+
                 <button class="btn btn-primary" onclick="uploadfileToServer()">📤Upload File</button>
             </div>
         </div>
@@ -138,6 +143,7 @@
 
             formData.append(`change_img_format`, $('[name=change_img_format]').is(':checked'));
             formData.append(`add_watermask_to_img`, $('[name=add_watermask_to_img]').is(':checked'));
+            formData.append(`make_sm_img_too`, $('[name=make_sm_img_too]').is(':checked'));
 
             $.ajax({
                 type: "POST",

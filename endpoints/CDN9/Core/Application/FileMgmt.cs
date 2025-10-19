@@ -59,7 +59,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                 Path = $"{tenantFolder}{d}",
                 Text = x.Substring(x.LastIndexOf('/') + 1),
                 IsReadOnly = Info.IsReadOnly,
-                Length = Info.Length < 1024 ? $"{Info.Length}B" : Info.Length < 1_000_000?  $"{Info.Length / 1024}Kb": $"{Info.Length / 1000000}Mb",
+                Length = Info.Length < 1024 ? $"{Info.Length}B" : Info.Length < 1_000_000 ? $"{Info.Length / 1024}Kb" : $"{Info.Length / 1000000}Mb",
                 Attributes = Info.Attributes,
                 Extension = Info.Extension,
                 UnixFileMode = Info.UnixFileMode,
@@ -75,7 +75,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
     }
 
 
-    public async Task<List<UploadRes>> UploadFilesAsync(IFormFileCollection files, string rootPath, string folder, bool change_img_format, bool add_watermark, CancellationToken ct)
+    public async Task<List<UploadRes>> UploadFilesAsync(IFormFileCollection files, string rootPath, string folder, bool change_img_format, bool add_watermark, bool make_sm_img_too, CancellationToken ct)
     {
 
         var path = $"{rootPath}/{folder}";
@@ -122,6 +122,14 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                     fileName = await UploadAsOrginal(path, formFile, fileName, fileN.ToString(), fileExt.ToString(), ct);
             }
 
+
+            if (make_sm_img_too && formFile.FileName.GetFileType() == FileType.Img)
+            {
+                var fullName = Path.Combine(path, "sm", fileName);
+                if (!Directory.Exists(Path.Combine(path, "sm")))
+                    Directory.CreateDirectory(Path.Combine(path, "sm"));
+                await formFile.ResizeImage(fullName, 150);
+            }
 
             mirrors.CurrentValue.ForEach(async x =>
             {

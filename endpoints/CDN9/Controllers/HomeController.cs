@@ -76,8 +76,12 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
     }
 
     [RequestSizeLimit(long.MaxValue)]
-    public async Task<ActionResult<UploadRes>> UploadAsync([FromForm] string folder, [FromForm] bool change_img_format, [FromForm] bool add_watermask_to_img, CancellationToken ct)
-        => Ok(await fileMgmt.UploadFilesAsync(Request.Form.Files, rootPath, folder, change_img_format, add_watermask_to_img, ct));
+    public async Task<ActionResult<UploadRes>> UploadAsync([FromForm] string folder, 
+                                                           [FromForm] bool change_img_format, 
+                                                           [FromForm] bool add_watermask_to_img,
+                                                           [FromForm] bool make_sm_img_too, 
+                                                           CancellationToken ct)
+        => Ok(await fileMgmt.UploadFilesAsync(Request.Form.Files, rootPath, folder, change_img_format, add_watermask_to_img, make_sm_img_too,ct));
 
 
     [HttpGet("video")]
