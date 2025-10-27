@@ -19,7 +19,7 @@ var icon_exe ='⚙️'
 function showFile2(path, title, extension) {
 
     extension = fileIcon(extension.toLowerCase());
-    debugger
+    
     let fullPath = path + '/' + title;
 
     $("#showModal").html(`<div class="mb-2 pb-1 px-2 text-left border-bottom">
