@@ -153,8 +153,7 @@
                 contentType: false,  // tell jQuery not to set contentType
                 success: function (res) {
                     uploadModal.hide();
-                    debugger;
-                    loadSub(_lastuploadFilePath.i0, _lastuploadFilePath.path);
+                    loadSub(_lastuploadFilePath.i0.replace("dir_",""), _lastuploadFilePath.path);
                     _lastuploadFilePath = "";
                     document.getElementById('lastuploadFileInput').value= null;
                 }
