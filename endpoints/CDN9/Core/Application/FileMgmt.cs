@@ -1,6 +1,5 @@
 ﻿using CDN9.Core.Domain;
 using CDN9.Core.Infrestrucrure.Persistance;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Channels;
 
@@ -20,7 +19,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
             List<D> allFiles = [];
 
             var (allDirs2, allFiles2) = SubDir2($"", tenantFolder);
-            allFiles.AddRange(allFiles2.Where(x => x.Path.Contains(search)));
+            allFiles.AddRange(allFiles2.Where(x =>(x.Path+'/'+ x.Text).Contains(search,StringComparison.InvariantCultureIgnoreCase)));
             foreach (var dir in allDirs2)
             {
                 var (allDirs3, allFiles3) = SubDir2($"{dir.Path}", tenantFolder);
@@ -30,7 +29,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                 foreach (var dir2 in allDirs3)
                 {
                     var (allDirs4, allFiles4) = SubDir2($"{dir2.Path}", tenantFolder);
-                    allFiles.AddRange(allFiles4.Where(x => x.Path.ToLower().Contains(search.ToLower())));
+                    allFiles.AddRange(allFiles4.Where(x => (x.Path + '/' + x.Text).Contains(search, StringComparison.InvariantCultureIgnoreCase)));
                 }
             }
 

@@ -253,9 +253,8 @@ function pushSelectedfilesToParent(filePath) {
     myModal.hide();
 }
 
-function nextFile(filePath) {
-
-    let ind = lastFiles.findIndex(x => x.path == filePath);
+function nextFile(filePath) {    
+    let ind = lastFiles.findIndex(x => x.path+'/'+x.text == filePath);
     ind++;
     if (ind == lastFiles.length)
         return;
@@ -264,8 +263,7 @@ function nextFile(filePath) {
 }
 
 function prevFile(filePath) {
-
-    let ind = lastFiles.findIndex(x => x.path == filePath);
+    let ind = lastFiles.findIndex(x => x.path + '/' + x.text == filePath);
     if (ind == 0)
         return;
     ind--;
