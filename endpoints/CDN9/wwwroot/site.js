@@ -4,22 +4,22 @@ var lastFolder = "";
 var lastI0 = 0;
 var lastFiles = [];
 var baseurl = "home";
-var icon_image='🖼️';
+var icon_image = '🖼️';
 var icon_video = '🎞️';
-var icon_txt='📄';
+var icon_txt = '📄';
 var icon_doc = '📘';
-var icon_zip='🗜';
-var icon_audio='🔊';
-var icon_unknown='⛘';
+var icon_zip = '🗜';
+var icon_audio = '🔊';
+var icon_unknown = '⛘';
 var icon_pdf = '📕';
 var icon_excel = '📗';
 var icon_powerpoint = '📙';
-var icon_exe ='⚙️'
+var icon_exe = '⚙️'
 
 function showFile2(path, title, extension) {
 
     extension = fileIcon(extension.toLowerCase());
-    
+
     let fullPath = path + '/' + title;
 
     $("#showModal").html(`<div class="mb-2 pb-1 px-2 text-left border-bottom">
@@ -34,7 +34,7 @@ function showFile2(path, title, extension) {
                                           <source src="${fullPath}" type="audio/mpeg">
                                           Your browser does not support the audio element.
                                       </audio>`);
-    }   
+    }
     else if (extension == icon_image) {
         $("#showModal").append(`<img src="${fullPath}" style="max-width: 100%;" />`);
     }
@@ -52,7 +52,7 @@ function addDirectoryModal(path, title, dir) {
     $("#showModal").html(`
                <input type="hidden" class="form-control" id="parent_dir" value="${dir}" >
                <input type="hidden" class="form-control" id="parent_path" value="${path}" >
-               <div class="mb-3">
+               <div class="mb-3 px-3">
                  <label for="exampleInputEmail1" class="form-label">Name</label>
                  <input type="text" class="form-control" id="dir_name" >
                </div>
@@ -60,15 +60,27 @@ function addDirectoryModal(path, title, dir) {
             `)
     $(".modal-title").html(title);
     myModal.show();
+    $("#dir_name").focus();
 }
 
 function addSubDirectory() {
     $.post(`/${baseurl}/CreateDir`, { d: $("#parent_path").val(), name: $("#dir_name").val() })
-        .done(function () {
+        .done(function (data) {
             myModal.hide();
-            
             lastFolder = "";
-            loadSub($("#parent_dir").val(), $("#parent_path").val())
+            let pd = $("#parent_dir").val();
+            let pp = $("#parent_path").val();
+            let newD = $("#dir_name").val();
+            loadSub(pd.replace("dir_", ""), pp, () => {
+                let a = "#" + pd + " [title=" + newD + "]"
+                var elm = $(a)[0];
+
+
+                $(elm).click();
+                lastFolder = pp + "/" + newD;
+                //loadSub(pd.replace("dir_", ""), pp + '/' + newD)
+            });
+
             $("#showModal").html(``);
         })
         .fail(function () {
@@ -81,7 +93,7 @@ function removeDir(path, parentD, divId) {
     $.post(`/${baseurl}/RemoveDir`, { d: path })
         .done(function () {
 
-
+            lastFolder = "";
             loadSub(divId, parentD)
 
         })
@@ -109,7 +121,7 @@ function renameFile(path, j) {
     $.post(`/${baseurl}/RenameFile`, { d: path, newName })
         .done(function () {
             myModal.hide();
-            
+
             let _lastFolder = lastFolder;
             lastFolder = "";
             loadSub(lastI0, _lastFolder);
@@ -122,7 +134,7 @@ function renameFile(path, j) {
 function showRenameFileModal(path, name, j) {
 
     $("#showModal").html(`
-               <div class="mb-3">
+               <div class="mb-3 px-3">
                  <label for="exampleInputEmail1" class="form-label">Name</label>
                  <input type="text" class="form-control" id="file_name" value='${name}' >
                </div>
@@ -130,9 +142,15 @@ function showRenameFileModal(path, name, j) {
             `)
     $(".modal-title").html('');
     myModal.show();
+
+
+    var input = $('#file_name')[0]; // Get raw DOM element
+    var end = input.value.lastIndexOf('.');
+    input.setSelectionRange(0, end);
+    input.focus(); // Focus the input to make the selection visible
 }
 
-function loadSub(i0, d) {
+function loadSub(i0, d,onAfterLoad) {
 
     $(`.folder`).removeClass('open');
     if (lastFolder == d && d != '') {
@@ -148,7 +166,7 @@ function loadSub(i0, d) {
     $("#fullPathOfDir").val(d);
     $("#files_").html('<div class="spinner-border" role="status"></div>');
     let isSearch = $('#search_files').val() != '';
-    $.get(`/${baseurl}/SubDir?d=` + d + '&search='+$('#search_files').val(), function (data, status) {
+    $.get(`/${baseurl}/SubDir?d=` + d + '&search=' + $('#search_files').val(), function (data, status) {
 
         lastFiles = data.files;
         let html = '';
@@ -161,13 +179,13 @@ function loadSub(i0, d) {
                                         ⋮
                                     </button>
                                     <ul class="dropdown-menu" >
-                                        <li><a class="dropdown-item" onclick="showUploadModal('${data.dirs[j].path}','${d}','${i0}_${j}')" href="#">📤Upload File</a></li>
+                                        <li><a class="dropdown-item" onclick="showUploadModal('${data.dirs[j].path}','${data.dirs[j].text}','${i0}_${j}')" href="#">📤Upload File</a></li>
                                         <li><a class="dropdown-item" onclick="addDirectoryModal('${data.dirs[j].path}','${data.dirs[j].text}','${i0}_${j}')" href="#">➕Sub Directory</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" onclick="removeDir('${data.dirs[j].path}','${d}','${i0}')" href="#">🗑️Remove</a></li>
                                     </ul>
                                 </div>
-                                <label class="p-2 folder d_${i0}_${j}" onclick="loadSub('${i0}_${j}','${data.dirs[j].path}')">${data.dirs[j].text}</label>
+                                <label class="p-2 ps-0 folder d_${i0}_${j}" onclick="loadSub('${i0}_${j}','${data.dirs[j].path}')" title="${data.dirs[j].text}">${data.dirs[j].text}</label>
                             </div>
                             <div id="dir_${i0}_${j}" class="ml-3 ms-3" style="" > </div>
                         </div>`;
@@ -209,7 +227,10 @@ function loadSub(i0, d) {
         if (data.files.length == 0)
             $("#files_").html(`<div class="ml-4 pb-2">--folder is empty--</div>`);
         else
-            $("#files_").html(html)
+            $("#files_").html(html);
+
+        if (onAfterLoad != undefined)
+            onAfterLoad();
     });
 }
 
@@ -277,5 +298,6 @@ var _lastuploadFilePath;
 //}
 function showUploadModal(path, d, i0) {
     _lastuploadFilePath = { path, d, i0 };
+    $(".modal-title").html(path);
     uploadModal.show();
 }
