@@ -21,8 +21,40 @@
                 <button type="button" class="btn btn-outline-dark ">Right</button> *@
                 </div>
             </div>
-            <div class="mainDirecories content-part">
-                @for (var i = 0; i < Model.Dires.Count; i++)
+            <div class="content-part">
+                <div class="" style="display:inline-flex">
+                    <div class="dropdown">
+                        <button class="btn btn-link btn-sm" type="button" data-bs-toggle="dropdown">
+                            ⋮
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" onclick="showUploadModal('/','/','dir_-1')" href="#">📤Upload File</a></li>
+                        </ul>
+                    </div>
+                    <label class="p-2 ps-0 d_-1" onclick="loadSub(-1,'/')" title="Root">💽 Root</label>
+                </div>
+                <div id="dir_-1" class="ms-3"></div>
+                <div class="mainDirecories">
+                    @for (var i = 0; i < Model.Dires.Count; i++)
+                    {
+                        var item = Model.Dires[i];
+                        <div class="" style="display:inline-flex">
+                            <div class="dropdown">
+                                <button class="btn btn-link btn-sm" type="button" data-bs-toggle="dropdown">
+                                    ⋮
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" onclick="showUploadModal('@item.Path','/','dir_@i')" href="#">📤Upload File</a></li>
+                                    <li><a class="dropdown-item" onclick="addDirectoryModal('@item.Path','@item.Text','dir_@i')" href="#">➕Sub Directory</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" onclick="removeDir('@item.Path','/','dir_@i')" href="#">🗑️Remove</a></li>
+                                </ul>
+                            </div>
+                            <label class="p-2 ps-0 folder d_@i" onclick="loadSub(@i,'@item.Path')" title="@item.Text">@item.Text</label>
+                        </div>
+                        <div id="dir_@i" class="ms-3"></div>
+                    }
+                </div>   @for (var i = 0; i < Model.Dires.Count; i++)
                 {
                     var item = Model.Dires[i];
                     <div class="" style="display:inline-flex">
@@ -39,12 +71,11 @@
                         </div>
                         <label class="p-2 ps-0 folder d_@i" onclick="loadSub(@i,'@item.Path')" title="@item.Text">@item.Text</label>
                     </div>
-                    <div id="dir_@i" class="ms-3">
-                    </div>
+                    <div id="dir_@i" class="ms-3"></div>
                 }
             </div>
         </div>
-        <div class="col-8 col-lg-9 position-relative"  >
+        <div class="col-8 col-lg-9 position-relative">
             <div class="border-bottom pt-1 px-2" style="margin-left:-11px;margin-right:-11px;padding-bottom: 3px;">
                 <div class="row">
                     <div class="col-2 pt-2">
@@ -66,11 +97,46 @@
                     </div>
                 </div>
             </div>
-            <div style="overflow-x: auto;">
-                <table id="files_" class="ml-3 content-part w-100">
+            <div style="overflow: auto;
+                        position: absolute;
+                        top: 42px;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        padding: 0;">
+
+                <table id="files_" class="ml-3  w-100">
+                    @for (var i = 0; i < Model.files.Count; i++)
+                    {
+                        var f = Model.files[i];
+                        var j = i;
+                        <tr id="file_@j">
+                            <td class="py-1 px-2" style="display:inline-flex">
+                                <label style='white-space: nowrap;'>
+                                    <input type="checkbox" value='@f.Path/@f.Text' class="_files" />
+                                </label>
+                                <label onclick="showFile2('@f.Path','@f.Text','@f.Extension')" id="file_lbl_@j" title="(@f.Length) - @f.Path">
+                                    @f.Text
+                                </label>
+
+                                <div class="dropdown">
+                                    <button class="btn btn-link btn-sm" type="button" data-bs-toggle="dropdown">
+                                        ⋮
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" onclick="showRenameFileModal('@f.Path/@f.Text','@f.Text',@j)" href="#">✏️Rename</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" onclick="removeFile('@f.Path/@f.Text',@j)" href="#">🗑️Remove</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td><small>@f.Length</small></td>
+                        </tr>
+                    }
                 </table>
+
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -102,9 +168,9 @@
             </div>
             <div class="modal-body ">
                 @Html.AntiForgeryToken()
-              
+
                 <div class="mb-3">
-                    <input type="file" id="lastuploadFileInput" multiple  class="form-control" />
+                    <input type="file" id="lastuploadFileInput" multiple class="form-control" />
                 </div>
 
                 <div class="mb-3 form-check form-switch">
