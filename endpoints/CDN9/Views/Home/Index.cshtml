@@ -23,15 +23,15 @@
             </div>
             <div class="content-part">
                 <div class="" style="display:inline-flex">
-                    <div class="dropdown">
+                    @* <div class="dropdown">
                         <button class="btn btn-link btn-sm" type="button" data-bs-toggle="dropdown">
                             ⋮
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" onclick="showUploadModal('/','/','dir_-1')" href="#">📤Upload File</a></li>
                         </ul>
-                    </div>
-                    <label class="p-2 ps-0 d_-1" onclick="loadSub(-1,'/')" title="Root">💽 Root</label>
+                    </div> *@
+                    <label class="p-2 ps-0 d_-1" onclick="loadSub(-1,'/')" title="Root">💽 /</label>
                 </div>
                 <div id="dir_-1" class="ms-3"></div>
                 <div class="mainDirecories">
@@ -54,25 +54,7 @@
                         </div>
                         <div id="dir_@i" class="ms-3"></div>
                     }
-                </div>   @for (var i = 0; i < Model.Dires.Count; i++)
-                {
-                    var item = Model.Dires[i];
-                    <div class="" style="display:inline-flex">
-                        <div class="dropdown">
-                            <button class="btn btn-link btn-sm" type="button" data-bs-toggle="dropdown">
-                                ⋮
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" onclick="showUploadModal('@item.Path','/','dir_@i')" href="#">📤Upload File</a></li>
-                                <li><a class="dropdown-item" onclick="addDirectoryModal('@item.Path','@item.Text','dir_@i')" href="#">➕Sub Directory</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" onclick="removeDir('@item.Path','/','dir_@i')" href="#">🗑️Remove</a></li>
-                            </ul>
-                        </div>
-                        <label class="p-2 ps-0 folder d_@i" onclick="loadSub(@i,'@item.Path')" title="@item.Text">@item.Text</label>
-                    </div>
-                    <div id="dir_@i" class="ms-3"></div>
-                }
+                </div>
             </div>
         </div>
         <div class="col-8 col-lg-9 position-relative">
