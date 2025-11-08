@@ -10,6 +10,7 @@ public record D
 
     public bool IsReadOnly { get; set; }
     public string Length { get; set; }
+    public long LengthByte { get; set; }
     public FileAttributes Attributes { get; set; }
     public string Extension { get; set; }
     public UnixFileMode UnixFileMode { get; set; }

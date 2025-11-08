@@ -59,6 +59,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                 Text = x.Substring(x.LastIndexOf('/') + 1),
                 IsReadOnly = Info.IsReadOnly,
                 Length = Info.Length < 1024 ? $"{Info.Length}B" : Info.Length < 1_000_000 ? $"{Info.Length / 1024}Kb" : $"{Info.Length / 1000000}Mb",
+                LengthByte =  Info.Length  ,
                 Attributes = Info.Attributes,
                 Extension = Info.Extension,
                 UnixFileMode = Info.UnixFileMode,

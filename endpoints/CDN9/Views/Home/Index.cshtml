@@ -84,7 +84,7 @@
                         top: 42px;
                         left: 0;
                         right: 0;
-                        bottom: 0;
+                        bottom: 23px;
                         padding: 0;">
 
                 <table id="files_" class="ml-3  w-100">
@@ -116,9 +116,23 @@
                         </tr>
                     }
                 </table>
-
+                
             </div>
-
+            <div class="border-top" style="overflow: auto;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        bottom: 0px;
+                        padding: 0;">
+                <span class="me-2"><strong class="me-2 total-file-count">@Model.files.Count</strong>items</span>|
+                <span class="me-2">
+                    @{
+                        var Length = Model.files.Sum(x => x.LengthByte);
+                    }
+                    <strong class="total-file-size"> @(Length < 1024 ? $"{Length}" : Length < 1_000_000 ? $"{(long)(Length / 1024)}" : $"{(long)(Length / 1000000)}")</strong>
+                    <span class="total-file-style">@(Length < 1024 ? $"B" : Length < 1_000_000 ? $"Kb" : $"Mb")</span>
+                </span>
+            </div>
         </div>
     </div>
 </div>

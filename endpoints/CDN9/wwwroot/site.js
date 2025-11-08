@@ -229,6 +229,11 @@ function loadSub(i0, d,onAfterLoad) {
         else
             $("#files_").html(html);
 
+        let Length = data.files.reduce((n, { lengthByte }) => n + lengthByte, 0);
+        $(".total-file-count").html(data.files.length);
+        $(".total-file-size").html(Math.ceil(Length < 1024 ? Length : Length < 1_000_000 ? Length / 1024 : Length / 1000000));
+        $(".total-file-style").html(Length < 1024 ? 'B' : Length < 1_000_000 ? 'Kb' : 'Mb');
+
         if (onAfterLoad != undefined)
             onAfterLoad();
     });
