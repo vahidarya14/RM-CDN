@@ -1,4 +1,5 @@
 ﻿var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+var detailModal = new bootstrap.Modal(document.getElementById('detailModal'));
 var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
 var lastFolder = "";
 var lastI0 = 0;
@@ -22,29 +23,47 @@ function showFile2(path, title, extension) {
 
     let fullPath = path + '/' + title;
 
-    $("#showModal").html(`<div class="mb-2 pb-1 px-2 text-left border-bottom">
-                            <button onclick="prevFile('${fullPath}')" class="btn btn-warning mr-1" style="margin-right:2px" ><</label>
-                            <button onclick="nextFile('${fullPath}')" class="btn btn-warning " >></label>
-                            <button onclick="pushSelectedfilesToParent('${fullPath}')" class="btn btn-warning float-right" style="float:right" >✔</button>
+    $("#showDetailModal").html(`<div class="mb-2 pb-1 px-2 text-left border-bottom">
+                            <button onclick="prevFile('${fullPath}')" title="prev" class="btn btn-outline-primary me-1" ><</label>
+                            <button onclick="nextFile('${fullPath}')" title="next" class="btn btn-outline-primary " >></label>
+                            <button onclick="removeFile('${fullPath}')" title="remove" class="btn btn-outline-danger ms-5 me-1" >❌</label>
+                            <button onclick="showRenameFileModal('${fullPath}','${title}')" title="rename" class="btn btn-outline-primary " >✏️</label>
+                            <button onclick="pushSelectedfilesToParent('${fullPath}')" title="push up" class="btn btn-warning float-right" style="float:right" >✔</button>
                         </div>`);
 
     if (extension == icon_audio) {
-        $("#showModal").append(`<audio controls class="w-100">
-                                          <source src="${fullPath}" type="audio/ogg">
-                                          <source src="${fullPath}" type="audio/mpeg">
-                                          Your browser does not support the audio element.
-                                      </audio>`);
+        $("#showDetailModal").append(`<label class="mb-4">${fullPath}</label><br />
+                                <a href="${fullPath}" target="_blank" class="mb-4">download⬇️</a> | <button onclick="playAudio('${fullPath}')" >play ${icon_audio}</button>`);
+
     }
     else if (extension == icon_image) {
-        $("#showModal").append(`<img src="${fullPath}" style="max-width: 100%;" />`);
+        $("#showDetailModal").append(`<img src="${fullPath}" style="max-width: 100%;" />`);
+    }
+    else if (extension == icon_video) {
+        $("#showDetailModal").append(`<label class="mb-4">${fullPath}</label><br />
+                                <a href="${fullPath}" target="_blank" class="mb-4">download⬇️</a> | <button onclick="playVideo('${fullPath}')" >play ${icon_video}</button>`);
     }
     else {
-        $("#showModal").append(`<span>${fullPath}</span><br />
-                                <a href="${fullPath}" target="_blank">download</a>`);
+        $("#showDetailModal").append(`<label class="mb-4">${fullPath}</label><br />
+                                <a href="${fullPath}" target="_blank" class="mb-4">download⬇️</a>`);
     }
 
     $(".modal-title").html(title);
-    myModal.show();
+    detailModal.show();
+}
+function playAudio(fullPath) {
+    $("#showDetailModal").append(`<audio controls class="w-100">
+                                <source src="${fullPath}" type="audio/ogg">
+                                <source src="${fullPath}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>`);
+}
+function playVideo(fullPath) {
+    $("#showDetailModal").append(`<video width="320" height="240" controls>
+                              <source src="${fullPath}" type="video/mp4">
+                              <source src="${fullPath}" type="video/ogg">
+                              Your browser does not support the video tag.
+                            </video>`);
 }
 
 function addDirectoryModal(path, title, dir) {
