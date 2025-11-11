@@ -18,7 +18,8 @@ var icon_powerpoint = '📙';
 var icon_exe = '⚙️'
 var icon_remove = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABdElEQVR4nN2VTU4CQRCFv0BgI7qDyBXAO6gXMGgMVzAQFfQQhngMFT2PYERRD2FwIRvGdPI6qYw9P/iz4SWdTOpVdXW/rqqBVUcZaAO3wBPwoeW+h+Kcz49wALwBUcZ6BfaX2bgAXJoN7oFToAGsaTWBHjAyfgPFZsJv/gkcZQQ5riNfnyRTFr/59hK33jFJWklOZaO5O7lHB6gF/GviPLqKfQFKoQRto3khFjSOJanJFsnHoWhsh6EEdyJPjK1qHnIC1AO2TePfl/0mlOBZZCMgxdjcxH7HpWuKc33yDTORlQBXjZVk/OQe6+Jnf5GgHvDbEP/+XxJtpUk0FNlLOPlEsoQe3uNc9qu0Mh39okwf0sq0rMEVxRqok7PRjhU7TWo0NBX9qHDtnxe7wBxYAHtZzgOTpKurJ6Gok88Vc5HnNAWTJJLWfTVRRctVy5nRfKHNc41rj5YGV9YPZ5pHliSUVBFutriSdM3o1iNwLS7xQVcDX3EsmNmCOciWAAAAAElFTkSuQmCC" alt="cancel--v1" height="20" >';
 var icon_rename = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVR4nO3VMWrCQRDF4c8jeAU9jZ5BUHMDtbBUO1tFPU6wELETKwVzgmCnQpokImwlupCwfxD1wese82N2dmd5KQNV8YkxSlhinRJQxBBf+MUCbzLQKADyMlIXP1kV/xeggUNo+5Y/IoBtyJxrtK4B9pijH3E9AqiHzAzHa4Bv9BIcUSd0knsBun8FnIc8RTviSgRQCZn3W0NOeU2bHvIl382yK2Bwsa5rqT+cHSYoY4VNSoDn0gnwnVmtvLwDqQAAAABJRU5ErkJggg==" alt="rename--v1" height="20">';
-function showFile2(path, title, extension) {
+
+function showFile2(path, title, extension, index) {
 
     extension = fileIcon(extension.toLowerCase());
 
@@ -31,8 +32,8 @@ function showFile2(path, title, extension) {
         </div>
 
          <div class="btn-group btn-group-sm ms-5" role="group" >
-          <button type="button" onclick="showRenameFileModal('${fullPath}','${title}')" title="rename" class="btn btn-outline-primary">${icon_rename}</button>
-          <button type="button" onclick="removeFile('${fullPath}')" title="remove" class="btn btn-outline-danger">${icon_remove}</button>
+          <button type="button" onclick="showRenameFileModal('${fullPath}','${title}',${index})" title="rename" class="btn btn-outline-primary">${icon_rename}</button>
+          <button type="button" onclick="removeFile('${fullPath}',${index})" title="remove" class="btn btn-outline-danger">${icon_remove}</button>
         </div>
 
 
@@ -131,6 +132,7 @@ function removeDir(path, parentD, divId) {
 }
 
 function removeFile(path, j) {
+    if (!confirm("are you sure?")) return;
 
     $.post(`/${baseurl}/RemoveFile`, { d: path })
         .done(function () {
@@ -234,7 +236,7 @@ function loadSub(i0, d,onAfterLoad) {
                                       <input type="checkbox" value='${f.path}/${f.text}' class="_files" />
                                       ${fileIcon(f.extension)}
                                    </label>
-                                   <label onclick="showFile2('${f.path}','${f.text}','${f.extension}')" id="file_lbl_${j}" title="(${f.length}) - ${f.path} " >
+                                   <label onclick="showFile2('${f.path}','${f.text}','${f.extension}',${j})" id="file_lbl_${j}" title="(${f.length}) - ${f.path} " >
                                         ${f.text}
                                    </label>
                                    
@@ -292,7 +294,7 @@ function nextFile(filePath) {
     if (ind == lastFiles.length)
         return;
     let f = lastFiles[ind];
-    showFile2(`${f.path}`, `${f.text}`, `${f.extension}`);
+    showFile2(`${f.path}`, `${f.text}`, `${f.extension}`,ind);
 }
 
 function prevFile(filePath) {
@@ -301,7 +303,7 @@ function prevFile(filePath) {
         return;
     ind--;
     let f = lastFiles[ind];
-    showFile2(`${f.path}`, `${f.text}`, `${f.extension}`);
+    showFile2(`${f.path}`, `${f.text}`, `${f.extension}`,ind);
 }
 
 function getSelectedFilesandPushToParent() {
