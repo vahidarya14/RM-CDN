@@ -16,7 +16,8 @@ var icon_pdf = '📕';
 var icon_excel = '📗';
 var icon_powerpoint = '📙';
 var icon_exe = '⚙️'
-
+var icon_remove = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABdElEQVR4nN2VTU4CQRCFv0BgI7qDyBXAO6gXMGgMVzAQFfQQhngMFT2PYERRD2FwIRvGdPI6qYw9P/iz4SWdTOpVdXW/rqqBVUcZaAO3wBPwoeW+h+Kcz49wALwBUcZ6BfaX2bgAXJoN7oFToAGsaTWBHjAyfgPFZsJv/gkcZQQ5riNfnyRTFr/59hK33jFJWklOZaO5O7lHB6gF/GviPLqKfQFKoQRto3khFjSOJanJFsnHoWhsh6EEdyJPjK1qHnIC1AO2TePfl/0mlOBZZCMgxdjcxH7HpWuKc33yDTORlQBXjZVk/OQe6+Jnf5GgHvDbEP/+XxJtpUk0FNlLOPlEsoQe3uNc9qu0Mh39okwf0sq0rMEVxRqok7PRjhU7TWo0NBX9qHDtnxe7wBxYAHtZzgOTpKurJ6Gok88Vc5HnNAWTJJLWfTVRRctVy5nRfKHNc41rj5YGV9YPZ5pHliSUVBFutriSdM3o1iNwLS7xQVcDX3EsmNmCOciWAAAAAElFTkSuQmCC" alt="cancel--v1" height="20" >';
+var icon_rename = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVR4nO3VMWrCQRDF4c8jeAU9jZ5BUHMDtbBUO1tFPU6wELETKwVzgmCnQpokImwlupCwfxD1wese82N2dmd5KQNV8YkxSlhinRJQxBBf+MUCbzLQKADyMlIXP1kV/xeggUNo+5Y/IoBtyJxrtK4B9pijH3E9AqiHzAzHa4Bv9BIcUSd0knsBun8FnIc8RTviSgRQCZn3W0NOeU2bHvIl382yK2Bwsa5rqT+cHSYoY4VNSoDn0gnwnVmtvLwDqQAAAABJRU5ErkJggg==" alt="rename--v1" height="20">';
 function showFile2(path, title, extension) {
 
     extension = fileIcon(extension.toLowerCase());
@@ -24,12 +25,20 @@ function showFile2(path, title, extension) {
     let fullPath = path + '/' + title;
 
     $("#showDetailModal").html(`<div class="mb-2 pb-1 px-2 text-left border-bottom">
-                            <button onclick="prevFile('${fullPath}')" title="prev" class="btn btn-outline-primary me-1" ><</label>
-                            <button onclick="nextFile('${fullPath}')" title="next" class="btn btn-outline-primary " >></label>
-                            <button onclick="removeFile('${fullPath}')" title="remove" class="btn btn-outline-danger ms-5 me-1" >❌</label>
-                            <button onclick="showRenameFileModal('${fullPath}','${title}')" title="rename" class="btn btn-outline-primary " >✏️</label>
-                            <button onclick="pushSelectedfilesToParent('${fullPath}')" title="push up" class="btn btn-warning float-right" style="float:right" >✔</button>
-                        </div>`);
+        <div class="btn-group btn-group-sm" role="group" >
+          <button type="button" onclick="prevFile('${fullPath}')" title="prev" class="btn btn-outline-primary"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAyklEQVR4nNXVIU4DQBAF0JcGUVksAoegAgmGI1TVkyDqwFWXO4DjDGDoDeAKvQACRWhS0dRAaNNkNmlQiJkE/gHeT3Z3dvjj6eGyCu/iGWuMs/EOHgN/w2F2wV3gHzjOxm8CX+E8Gx8F/oVhNj7AZxRcZeNnWAY+ycb7mAd+n40f4DXwJ+xl4vuYBf4Sg+VfFfw8omn2EbUc4b3qkltOd57pdpJLMtgZtOuqkgt8V30VLZPKz67lNkoWOFGQDh4qF47qldlSuvR/lQ2TBTV9NsnUKAAAAABJRU5ErkJggg==" alt="back" height="16"></button>
+          <button type="button" onclick="nextFile('${fullPath}')" title="next" class="btn btn-outline-primary"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAwUlEQVR4nNXVoW2CYRAG4CdQgSwWUYegorKYjoBiAhJAIbEt3QEFM4ApG8AKLEACikCCaGogbc0JBvgvhBvgfZIv993LjaeDx6zwIf6wRCUDqGETyAIPGUgd+0CmkuYV34F8ZCEtnAMZZCG9AC5oZyGjQH7wloWMAznhJQMoYRbIDk8ZSAWrQNao3hVQxjzCtxlPNI7wAxpFh39mrmk/86O14lT8olt0ePPq2L0XHf6MY4RPMgvnK9bzvipTdukXMv9b7TV7hOCjPwAAAABJRU5ErkJggg==" alt="forward" height="16"></button>
+        </div>
+
+         <div class="btn-group btn-group-sm ms-5" role="group" >
+          <button type="button" onclick="showRenameFileModal('${fullPath}','${title}')" title="rename" class="btn btn-outline-primary">${icon_rename}</button>
+          <button type="button" onclick="removeFile('${fullPath}')" title="remove" class="btn btn-outline-danger">${icon_remove}</button>
+        </div>
+
+
+
+        <button onclick="pushSelectedfilesToParent('${fullPath}')" title="push up" class="btn btn-outline-primary btn-sm float-right" style="float:right" ><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAlElEQVR4nN3SMQ4BURCA4W9bjZLoRbelO0jECWzNATQSl+EEWkdAKxHiAg6gRTaZQqHY3afyJ5OZN8n8eS9v+DFdbCM3Gj7jGbmWpIMTVnhhgQt6VQU7LKN+oBXnsl+J9kd9Q/9LvzIbzCQwwR5ZU0GGI6Ypt8hxxzBFMgpJkfKcHIeIOQbxxbXIMMYa19iTctn+hTfMuxhJ1kicJwAAAABJRU5ErkJggg==" alt="up3" height="16"></button>
+    </div>`);
 
     if (extension == icon_audio) {
         $("#showDetailModal").append(`<label class="mb-4">${fullPath}</label><br />
@@ -234,9 +243,9 @@ function loadSub(i0, d,onAfterLoad) {
                                             ⋮
                                         </button>
                                         <ul class="dropdown-menu" >
-                                            <li><a class="dropdown-item" onclick="showRenameFileModal('${f.path}/${f.text}','${f.text}',${j})" href="#">✏️Rename</a></li>
+                                            <li><a class="dropdown-item" onclick="showRenameFileModal('${f.path}/${f.text}','${f.text}',${j})" href="#">${icon_rename}Rename</a></li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" onclick="removeFile('${f.path}/${f.text}',${j})" href="#">🗑️Remove</a></li>
+                                            <li><a class="dropdown-item" onclick="removeFile('${f.path}/${f.text}',${j})" href="#">${icon_remove}Remove</a></li>
                                         </ul>
                                     </div>
                               </td>

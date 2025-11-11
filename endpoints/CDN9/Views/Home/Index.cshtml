@@ -35,7 +35,7 @@
                 </div>
                 <div id="dir_-1" class="ms-3"></div>
                 <div class="mainDirecories">
-                    @for (var i = 0; i < Model.Dires.Count; i++)
+                 @*    @for (var i = 0; i < Model.Dires.Count; i++)
                     {
                         var item = Model.Dires[i];
                         <div class="" style="display:inline-flex">
@@ -53,7 +53,7 @@
                             <label class="p-2 ps-0 folder d_@i" onclick="loadSub(@i,'@item.Path')" title="@item.Text">@item.Text</label>
                         </div>
                         <div id="dir_@i" class="ms-3"></div>
-                    }
+                    } *@
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
                         padding: 0;">
 
                 <table id="files_" class="ml-3  w-100">
-                    @for (var i = 0; i < Model.files.Count; i++)
+                 @*    @for (var i = 0; i < Model.files.Count; i++)
                     {
                         var f = Model.files[i];
                         var j = i;
@@ -115,6 +115,7 @@
                             <td><small>@f.Length</small></td>
                         </tr>
                     }
+      *@           
                 </table>
                 
             </div>
@@ -208,6 +209,7 @@
 @section Scripts {
     <script src="/site.js"></script>
     <script>
+        loadSub(-1,'/');
         function uploadfileToServer() {
 
             var e = $("#lastuploadFileInput")[0];
