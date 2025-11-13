@@ -22,11 +22,11 @@ label {
 }
 
 .folder:not(.open)::before {
-    content: "  📁";
+    content: "🗀 ";
 }
 
 .folder.open::before {
-    content: "📂▼";
+    content: "🗁▼";
 }
 
 .badge-length {
