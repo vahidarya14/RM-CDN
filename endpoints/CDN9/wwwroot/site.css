@@ -23,10 +23,12 @@ label {
 
 .folder:not(.open)::before {
     content: "🗀 ";
+    color: darkorange;
 }
 
 .folder.open::before {
     content: "🗁▼";
+    color: darkorange;
 }
 
 .badge-length {
