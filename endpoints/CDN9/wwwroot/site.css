@@ -86,7 +86,7 @@ label {
     box-shadow: 0 0 0 0 !important;
 }
 
-table label {
+table label, table small {
     text-wrap-mode: nowrap;
 }
 

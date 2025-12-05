@@ -1,5 +1,6 @@
 using CDN9.Core.Application;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace CDN9.Controllers;
 
@@ -99,5 +100,12 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
         var path = $"{host.WebRootPath}{f}"; // Store audio files separately
         var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
         return File(stream, "audio/mpeg", enableRangeProcessing: true);
+    }
+
+
+    [HttpGet("Infos")]
+    public IActionResult Infos([FromServices] IOptionsSnapshot<List<string>> replicas)
+    {
+        return Ok(new { replicas,version ="1.0.4" });
     }
 }

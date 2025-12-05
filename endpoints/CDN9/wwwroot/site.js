@@ -234,22 +234,22 @@ function loadSub(i0, d, onAfterLoad) {
 }
 
 function SortChanged(files) {
-/*    let files = [...files2];*/
+    /*    let files = [...files2];*/
     let sort_by = $("[name=sort_by]:checked").val();
     let sort_type = $("[name=sort_type]:checked").val();
     if (sort_by && sort_by != 'None') {
-        
+
         if (sort_by == 'text') {
             if (sort_type == 'Asc')
-                files = files.sort((first, second) => first[sort_by].localeCompare(second[sort_by])  );
+                files = files.sort((first, second) => first[sort_by].localeCompare(second[sort_by]));
             else
                 files = files.sort((first, second) => second[sort_by].localeCompare(first[sort_by]));
         }
         else if (sort_by == 'creationTimeUtc') {
             if (sort_type == 'Asc')
-                files = files.sort((first, second) => new Date(first[sort_by]) - new Date(second[sort_by]) );
+                files = files.sort((first, second) => new Date(first[sort_by]) - new Date(second[sort_by]));
             else
-                files = files.sort((first, second) => new Date(second[sort_by]) - new Date(first[sort_by]) );
+                files = files.sort((first, second) => new Date(second[sort_by]) - new Date(first[sort_by]));
         }
         else {
             if (sort_type == 'Asc')
@@ -285,9 +285,9 @@ function SortChanged(files) {
                                         </ul>
                                     </div>
                               </td>
-                              ${searchIsNotNull ? `<td><small>${f.path }</small></td>`:''}
-                              <td><small>${f.creationTimeUtc.substring(0, 16).replace('T', ' ') }</small></td>
-                              <td><small class="${f.length.replace(/[0-9]/g, '')} ${f.lengthByte > 8000000 ? 'very_big_file' : f.lengthByte > 4000000 ?'big_file':''}">${f.length}</small></td>
+                              ${searchIsNotNull ? `<td><small>${f.path}</small></td>` : ''}
+                              <td><small>${f.creationTimeUtc.substring(0, 16).replace('T', ' ')}</small></td>
+                              <td><small class="${f.length.replace(/[0-9]/g, '')} ${f.lengthByte > 8000000 ? 'very_big_file' : f.lengthByte > 4000000 ? 'big_file' : ''}">${f.length}</small></td>
                      </tr>`;
     }
     if (files.length == 0)
@@ -365,4 +365,36 @@ function showUploadModal(path, d, i0) {
     _lastuploadFilePath = { path, d, i0 };
     $(".modal-title").html(path);
     uploadModal.show();
+}
+
+
+function infpModal() {
+    $("#showDetailModal").html(`<div class="mb-2 pb-1 px-2 text-left">
+        
+    <b>Replica server:</b><br/>
+    <div id='replica_urls'>--no replicas--</div>
+    <br/>
+    <b>File ength color:</b><br/>
+    <small class=" Kb "> less than 1 Mb</small>
+    <small class=" Mb "> bigger than 1 Mb</small>
+    <small class=" Mb big_file"> bigger than 4 Mb</small>
+    <small class=" Mb very_big_file"> bigger than 8 Mb</small>
+      <br/>
+      <br/>
+    <b>version: </b> <span id='version'></span><br/>
+    </div>`);
+
+    $(".modal-title").html("? system info");
+    detailModal.show();
+
+    $.get('/infos').then(data => {
+        if (data.replicas.value.length == 0)
+            $("#replica_urls").html('--no replicas--');
+        else {
+            let replica_urls = '';
+            data.replicas.value.map(x => replica_urls += `<a href='${x}' target='_blank'>${x}</a><br/>`);
+            $("#replica_urls").html(replica_urls);
+        }
+        $("#version").html(data.version);
+    })
 }
