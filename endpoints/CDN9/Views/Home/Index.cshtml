@@ -70,8 +70,8 @@
                     </div>
                     <div class="col">
                         <div class="input-group">
-                            <input type="text" id="search_files" class="form-control" placeholder="search...">
-                            <button class="btn btn-outline-secondary btn-sm input-group-text" onclick="loadSub('','')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA2UlEQVR4nO3TL09CURjH8c8mQwvtMisNg29BOsFAMsDc6MxpcEYZDIIkNl+a78OMyZ3tCQbZvedeCDq+5YTzbN89f36c+Gv0scAy3lesMEXrEIIHzND+5e8a7+g1FQxKatrYoqg7otRBFTpY15Es9oxoH4+4lElacg5XGOdK5pn1F3g5tqSIQ8ki5SCHIW5yJdPIQVXe6gSzFUGrcmG3GKlJL4LWKRF8YqIBRQTtKc70HN3YwSY6SIKvpiIRtJSD57iitOSzH/8HE5Vxhx3u/41ogo9jS05ozDfB3x0cF9hxxwAAAABJRU5ErkJggg==" alt="search"></button>
+                            <input type="text" id="search_files"  onkeydown="javascript:if (event.keyCode === 13)loadSub('','');" class="form-control" placeholder="search...">
+                            @* <button class="btn btn-outline-secondary btn-sm input-group-text" onclick="loadSub('','')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA2UlEQVR4nO3TL09CURjH8c8mQwvtMisNg29BOsFAMsDc6MxpcEYZDIIkNl+a78OMyZ3tCQbZvedeCDq+5YTzbN89f36c+Gv0scAy3lesMEXrEIIHzND+5e8a7+g1FQxKatrYoqg7otRBFTpY15Es9oxoH4+4lElacg5XGOdK5pn1F3g5tqSIQ8ki5SCHIW5yJdPIQVXe6gSzFUGrcmG3GKlJL4LWKRF8YqIBRQTtKc70HN3YwSY6SIKvpiIRtJSD57iitOSzH/8HE5Vxhx3u/41ogo9jS05ozDfB3x0cF9hxxwAAAABJRU5ErkJggg==" alt="search"></button> *@
                             <button class="btn btn-outline-secondary btn-sm input-group-text mx-1" onclick="showUploadModal(lastFolder,'/','dir_'+lastI0)"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAC7klEQVR4nO2Y24tNURzHP2Zcj0sT48yhyC1FFFHThFyKpvHiRSQ8zwOat+FNlEZR5A8YJEoZD+6J4uQaIYxcGqWExMxghinmaE3freU458y5rD1nn+xP7dpr771+v993r9tvLQgJCQkCg4EFwEZgG7AFWAMsBMopAaqBw8BXIJHm+gg0AzUEkAnASaDXCvgZcBw4CBwCWoCnSaJagOkEhGXAewX2GdgFTMrw/QxgJ9CpOu1ALUVmFfBdAZ0AojnUHa8WM3V/ApspErOBbwpkR542Bqmu6ZI9wGJ8IqKZZoW6hMcQ4IlE7HbgZ49smS5agUOmAceA7qTB2QqsBRpUvgaUOfBXBlyRzSYcUWsNRNN3HwBXgdeWINMVfgGzXDkF5smm+XlVLox1KdhmTas2NRLmTZ2uOS3b9YUauiFDe/sZN/Uu/loKNsn/BQpgvoy81GAuBlHF8KkQIw0OZ6FC6FYcI/KpvAS4JwNFW5hEm+KYSg5UWQPMS+js9aIYvFUs+4HVwND+Ksy0ptQ2DbS8mtMxj5PWrg9AY7pxOw54pQ9PAaMIDmOARcAGLco9ivNuqlzuqF5e8mGGiuaYPGaTZdyyMgsj9E+y16vVeyJuiclZq+5dMVzpUEKt1Mc+PTiAW2LaTNkbK5diYsAXNYLJQLgvR0t9FOGXmCa7EdpVGOuDiOQWcS2mWjbNzMYPFYb5ICJmCUn1rlAqZK/DFN6okGlfnS2PUgTqCSFJzEMH/kbKltmZclmFdQ4M31Fab/9tWwh6Z0TcduBvjmy/MIWtKpzBH5KFuKTR2itRae0AzVFOqQiJWHlYnfdwux68A6aUiJAjsntTpy99mPPX85aY5QEWErFEdCoz+YvRwDnL8VlgPTA5m9TZZyERYK7GhNedzKq+Ml2Fcn3ckeHQOd0Vz0NIPA8/CXWnf1oiFZU6+r+odcZLnTNd130U0gU81+xUZ4+JgcTP6XdACYUEjVBI0AiFBI14hjUmJCQk5D/lN23FLD07zTV6AAAAAElFTkSuQmCC" alt="upload-to-cloud--v1" height="20px"></button>
                             <button class="btn btn-outline-secondary btn-sm input-group-text" onclick="addDirectoryModal(lastFolder,lastFolder,'dir_'+lastI0)"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACK0lEQVR4nO2ZwU4UQRCGv+CCiciLKPHkRbgZ5YBRQ7K+hQHBB+AE6skTTwCcwUfRiLsh6g25KmKie6BNJf+Qdpyd7WGHnV7tL6lkd7s7Xf92VU33NCQSiVCmgFfAF8AFmPVbIkJeBgrwrQfcJjKO5NxcYP/X6t8FrhERThbKVeCdxmwxxkKMW8DPC4TksHYEvFBe1yLEeOiF5ahts04hTTDvrcxYCyn1958TctxQvFex4xAh42Z/kTXcIX7m/qscGRdcEhIZLgmJDJeERIZLQiLDJSGR4ZKQyHAxC5kE2sAO0AFOgR/AJ2AXeAK0YhfyGDgMOEh9Bh7EKGRC76iy+d8Dz4CbwLTMPq8CB1VOiKMmE/ELeApcKelrbct65xyVEAunM4m4V9D+Btgv+P2+J8bCrFEhk15O2EoUUebTipczrdBBl0Hby4l+4eRKfDLnP6i9HTroMtjVfPbP9sMN8GlN7dtVBtVNV/PdKOnjBvg0q/aPVQbVzYnmm/ES2wVaVgBm9P20SSHfckLMuVAhezkhJ00K6Wg+e9gNG1rdKoPqZkfz2RO7H26AT8+Lkj27dbJLlFGwpPkOhii/naLy6+93Rm3LFxCyqrZDPVzPmZKYJu4De9p25Nn3EttnQWNse/OISFj3xKzktxs5WlqJXtllaJNs6N91ypk1VaTrslkldrYlOZMIOwJEx12dBAeFoeVENOHUD6teiyrNb4GvwHethJVYq05/JHbGb3CG+sovxFVCAAAAAElFTkSuQmCC" alt="add-folder--v1" height="20px"></button>
                         </div>
@@ -126,21 +126,21 @@
                     sort:
                     <div class="btn-group btn-group-sm" role="group">
                         <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_by" id="btnradio1" value="text" autocomplete="off" checked>
-                        <label class="btn btn-outline-dark" for="btnradio1">Name</label>
+                        <label class="btn btn-outline-secondary" for="btnradio1">Name</label>
 
                         <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_by" id="btnradio3" value="lengthByte" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btnradio3">Size</label>
+                        <label class="btn btn-outline-secondary" for="btnradio3">Size</label>
 
                         <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_by" id="btnradio4" value="creationTimeUtc" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btnradio4">DateTime</label>
+                        <label class="btn btn-outline-secondary" for="btnradio4">DateTime</label>
                     </div>
 
                     <div class="btn-group btn-group-sm" role="group">
                         <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_type" id="btnradio5" value="Asc" autocomplete="off" checked>
-                        <label class="btn btn-outline-dark" for="btnradio5">Asc</label>
+                        <label class="btn btn-outline-secondary" for="btnradio5">Asc</label>
 
                         <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_type" id="btnradio6" value="Desc" autocomplete="off">
-                        <label class="btn btn-outline-dark" for="btnradio6">Desc</label>
+                        <label class="btn btn-outline-secondary" for="btnradio6">Desc</label>
                     </div>
                 </div>
             </div>

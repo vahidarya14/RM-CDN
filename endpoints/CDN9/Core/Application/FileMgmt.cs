@@ -18,12 +18,12 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
         {
             List<D> allFiles = [];
 
-            var (allDirs2, allFiles2) = SubDir2($"", tenantFolder);
+            var (allDirs2, allFiles2) = SubDir2(d, tenantFolder);
             allFiles.AddRange(allFiles2.Where(x =>(x.Path+'/'+ x.Text).Contains(search,StringComparison.InvariantCultureIgnoreCase)));
             foreach (var dir in allDirs2)
             {
                 var (allDirs3, allFiles3) = SubDir2($"{dir.Path}", tenantFolder);
-                allFiles.AddRange(allFiles3.Where(x => x.Path.ToLower().Contains(search.ToLower())));
+                allFiles.AddRange(allFiles3.Where(x => (x.Path + '/' + x.Text).Contains(search, StringComparison.InvariantCultureIgnoreCase)));
 
 
                 foreach (var dir2 in allDirs3)

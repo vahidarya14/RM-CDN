@@ -31,10 +31,10 @@ function showFile2(path, title, extension, index) {
           <button type="button" onclick="nextFile('${fullPath}')" title="next" class="btn btn-outline-primary"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAwUlEQVR4nNXVoW2CYRAG4CdQgSwWUYegorKYjoBiAhJAIbEt3QEFM4ApG8AKLEACikCCaGogbc0JBvgvhBvgfZIv993LjaeDx6zwIf6wRCUDqGETyAIPGUgd+0CmkuYV34F8ZCEtnAMZZCG9AC5oZyGjQH7wloWMAznhJQMoYRbIDk8ZSAWrQNao3hVQxjzCtxlPNI7wAxpFh39mrmk/86O14lT8olt0ePPq2L0XHf6MY4RPMgvnK9bzvipTdukXMv9b7TV7hOCjPwAAAABJRU5ErkJggg==" alt="forward" height="16"></button>
         </div>
 
-         <div class="btn-group btn-group-sm ms-5" role="group" >
-          <button type="button" onclick="showRenameFileModal('${fullPath}','${title}',${index})" title="rename" class="btn btn-outline-primary">${icon_rename}</button>
-          <button type="button" onclick="removeFile('${fullPath}',${index})" title="remove" class="btn btn-outline-danger">${icon_remove}</button>
-        </div>
+         <div class="btn-group btn-group-sm ms-5" role="group" >  </div>
+          <button type="button" onclick="showRenameFileModal('${fullPath}','${title}',${index})" title="rename" class="btn btn-sm btn-outline-primary">${icon_rename}</button>
+          <button type="button" onclick="removeFile('${fullPath}',${index})" title="remove" class="btn btn-sm btn-outline-danger">${icon_remove}</button>
+      
 
 
 
@@ -240,7 +240,6 @@ function SortChanged(files2) {
     if (sort_by && sort_by != 'None') {
         
         if (sort_by == 'text') {
-            debugger
             if (sort_type == 'Asc')
                 files = files.sort((first, second) => first[sort_by].localeCompare(second[sort_by])  );
             else
@@ -261,7 +260,7 @@ function SortChanged(files2) {
     }
 
     let html = '';
-
+    let searchIsNotNull = $('#search_files').val() != '';
     for (let i = 0; i < files.length; i++) {
         let j = i;
         let f = files[j];
@@ -286,8 +285,9 @@ function SortChanged(files2) {
                                         </ul>
                                     </div>
                               </td>
+                              ${searchIsNotNull ? `<td><small>${f.path }</small></td>`:''}
                               <td><small>${f.creationTimeUtc.substring(0, 16).replace('T', ' ') }</small></td>
-                              <td><small class="${f.length.replace(/[0-9]/g, '')}">${f.length}</small></td>
+                              <td><small class="${f.length.replace(/[0-9]/g, '')} ${f.lengthByte > 8000000 ? 'very_big_file' : f.lengthByte > 4000000 ?'big_file':''}">${f.length}</small></td>
                      </tr>`;
     }
     if (files.length == 0)

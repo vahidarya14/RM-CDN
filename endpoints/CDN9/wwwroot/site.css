@@ -70,11 +70,19 @@ label {
     color: white;
     padding: 0px 2px;
 }
+.very_big_file {
+    background: #990000;
+}
+.big_file {
+    background: red;
+}
 
-.btn-check:active + .btn-outline-dark:focus, .btn-check:checked + .btn-outline-dark:focus, .btn-outline-dark.active:focus, .btn-outline-dark.dropdown-toggle.show:focus, .btn-outline-dark:active:focus {
+.btn-check:active + .btn-outline-dark:focus, .btn-check:checked + .btn-outline-dark:focus, .btn-outline-dark.active:focus, .btn-outline-dark.dropdown-toggle.show:focus, .btn-outline-dark:active:focus,
+.btn-check:active + .btn-outline-secondary:focus, .btn-check:checked + .btn-outline-secondary:focus, .btn-outline-secondary.active:focus, .btn-outline-secondary.dropdown-toggle.show:focus, .btn-outline-secondary:active:focus {
     box-shadow: 0 0 0 0 !important;
 }
-.btn-check:focus + .btn-outline-dark {
+.btn-check:focus + .btn-outline-dark, 
+.btn-check:focus + .btn-outline-secondary {
     box-shadow: 0 0 0 0 !important;
 }
 
@@ -87,6 +95,12 @@ table label {
         position: fixed !important;
         z-index: 3;
         background: white;
+        min-width:50%;
+    }
+}
+@media only screen and (max-width: 400px) {
+    .folder-div {
+        min-width: 80%;
     }
 }
 
