@@ -180,7 +180,7 @@ function showRenameFileModal(path, name, j) {
     input.focus(); // Focus the input to make the selection visible
 }
 
-function loadSub(i0, d,onAfterLoad) {
+function loadSub(i0, d, onAfterLoad) {
 
     $(`.folder`).removeClass('open');
     if (lastFolder == d && d != '') {
@@ -226,11 +226,45 @@ function loadSub(i0, d,onAfterLoad) {
             $("#dir_" + i0).html(html);
 
 
-        html = '';
-        for (let i = 0; i < data.files.length; i++) {
-            let j = i;
-            let f = data.files[j];
-            html += `<tr id="file_${j}">
+        SortChanged(lastFiles);
+
+        if (onAfterLoad != undefined)
+            onAfterLoad();
+    });
+}
+
+function SortChanged(files2) {
+    let files = [...files2];
+    let sort_by = $("[name=sort_by]:checked").val();
+    let sort_type = $("[name=sort_type]:checked").val();
+    if (sort_by && sort_by != 'None') {
+        
+        if (sort_by == 'text' ) {
+            if (sort_type == 'Asc')
+                files = [...files].sort((first, second) => first[sort_by] > second[sort_by]);
+            else
+                files = [...files].sort((first, second) => first[sort_by] < second[sort_by]);
+        }
+        else if ( sort_by == 'lastWriteTimeUtc') {
+            if (sort_type == 'Asc')
+                files = [...files].sort((first, second) => new Date(first[sort_by]) > new Date(second[sort_by]) );
+            else
+                files = [...files].sort((first, second) => new Date(second[sort_by]) > new Date(first[sort_by]) );
+        }
+        else {
+            if (sort_type == 'Asc')
+                files = [...files].sort((first, second) => first[sort_by] - second[sort_by]);
+            else
+                files = [...files].sort((first, second) => second[sort_by] - first[sort_by]);
+        }
+    }
+
+    let html = '';
+
+    for (let i = 0; i < files.length; i++) {
+        let j = i;
+        let f = files[j];
+        html += `<tr id="file_${j}">
                                <td class="py-1 px-2" style="display:inline-flex">
                                    <label style='white-space: nowrap;'>
                                       <input type="checkbox" value='${f.path}/${f.text}' class="_files" />
@@ -251,22 +285,19 @@ function loadSub(i0, d,onAfterLoad) {
                                         </ul>
                                     </div>
                               </td>
-                              <td><small>${f.length}</small></td>
+                              <td><small>${f.creationTimeUtc.substring(0, 19).replace('T', ' ') }</small></td>
+                              <td><small class="${f.length.replace(/[0-9]/g, '')}">${f.length}</small></td>
                      </tr>`;
-        }
-        if (data.files.length == 0)
-            $("#files_").html(`<div class="ml-4 pb-2">--folder is empty--</div>`);
-        else
-            $("#files_").html(html);
+    }
+    if (files.length == 0)
+        $("#files_").html(`<div class="ml-4 pb-2">--folder is empty--</div>`);
+    else
+        $("#files_").html(html);
 
-        let Length = data.files.reduce((n, { lengthByte }) => n + lengthByte, 0);
-        $(".total-file-count").html(data.files.length);
-        $(".total-file-size").html(Math.ceil(Length < 1024 ? Length : Length < 1_000_000 ? Length / 1024 : Length / 1000000));
-        $(".total-file-style").html(Length < 1024 ? 'B' : Length < 1_000_000 ? 'Kb' : 'Mb');
-
-        if (onAfterLoad != undefined)
-            onAfterLoad();
-    });
+    let Length = files.reduce((n, { lengthByte }) => n + lengthByte, 0);
+    $(".total-file-count").html(files.length);
+    $(".total-file-size").html(Math.ceil(Length < 1024 ? Length : Length < 1_000_000 ? Length / 1024 : Length / 1000000));
+    $(".total-file-style").html(Length < 1024 ? 'B' : Length < 1_000_000 ? 'Kb' : 'Mb');
 }
 
 function fileIcon(extension) {
@@ -288,13 +319,13 @@ function pushSelectedfilesToParent(filePath) {
     myModal.hide();
 }
 
-function nextFile(filePath) {    
-    let ind = lastFiles.findIndex(x => x.path+'/'+x.text == filePath);
+function nextFile(filePath) {
+    let ind = lastFiles.findIndex(x => x.path + '/' + x.text == filePath);
     ind++;
     if (ind == lastFiles.length)
         return;
     let f = lastFiles[ind];
-    showFile2(`${f.path}`, `${f.text}`, `${f.extension}`,ind);
+    showFile2(`${f.path}`, `${f.text}`, `${f.extension}`, ind);
 }
 
 function prevFile(filePath) {
@@ -303,7 +334,7 @@ function prevFile(filePath) {
         return;
     ind--;
     let f = lastFiles[ind];
-    showFile2(`${f.path}`, `${f.text}`, `${f.extension}`,ind);
+    showFile2(`${f.path}`, `${f.text}`, `${f.extension}`, ind);
 }
 
 function getSelectedFilesandPushToParent() {

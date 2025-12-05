@@ -57,3 +57,39 @@ label {
 .modal-header{
     border-bottom:none;
 }
+
+.Mb {
+    background: #cf8806;
+    border-radius: 4px;
+    color: white;
+    padding: 0px 2px;
+}
+.Kb {
+    background: #06cf63;
+    border-radius: 4px;
+    color: white;
+    padding: 0px 2px;
+}
+
+.btn-check:active + .btn-outline-dark:focus, .btn-check:checked + .btn-outline-dark:focus, .btn-outline-dark.active:focus, .btn-outline-dark.dropdown-toggle.show:focus, .btn-outline-dark:active:focus {
+    box-shadow: 0 0 0 0 !important;
+}
+.btn-check:focus + .btn-outline-dark {
+    box-shadow: 0 0 0 0 !important;
+}
+
+table label {
+    text-wrap-mode: nowrap;
+}
+
+@media only screen and (max-width: 766px) {
+    .folder-div {
+        position: fixed !important;
+        z-index: 3;
+        background: white;
+    }
+}
+
+.btn-link {
+    text-decoration: none;
+}

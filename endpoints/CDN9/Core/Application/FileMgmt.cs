@@ -67,7 +67,6 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                 CreationTimeUtc = Info.CreationTimeUtc,
                 LastWriteTimeUtc = Info.LastWriteTimeUtc,
                 LastAccessTimeUtc = Info.LastAccessTimeUtc,
-
             };
         }).Where(x => x is not null).ToList();
 

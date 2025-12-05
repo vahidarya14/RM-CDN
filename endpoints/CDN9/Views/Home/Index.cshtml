@@ -13,12 +13,13 @@
 </div> *@
 <div class="container-fluid fm_sidebar overflow-hidden">
     <div class="row" style="height:100vh;">
-        <div class="col-4 col-lg-3 px-0 py-2 position-relative border-end">
+        <div class="col-4 col-lg-3 px-0 py-2 position-relative border-end folder-div">
             @* <div class="border-bottom py-2" style="margin-left:-11px;margin-right:-11px;">
                 <div class="btn-group btn-group-sm" role="group">
                     <button type="button" onclick="addDirectoryModal('','','mainDirecories')" class="btn btn-outline-dark ">➕Directory</button>
                 </div>
             </div> *@
+            <button class="btn btn-link btn-sm d-inline d-md-none float-end" onclick="$('.folder-div').addClass('d-none')">✖</button>
             <div class="" style="overflow-y: auto;
                                  height: 98vh;
                                  overflow-x: hidden;">
@@ -35,7 +36,7 @@
                 </div>
                 <div id="dir_-1" class="ms-3"></div>
                 <div class="mainDirecories">
-                 @*    @for (var i = 0; i < Model.Dires.Count; i++)
+                    @*    @for (var i = 0; i < Model.Dires.Count; i++)
                     {
                         var item = Model.Dires[i];
                         <div class="" style="display:inline-flex">
@@ -57,10 +58,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-8 col-lg-9 position-relative">
+        <div class="col col-md-8 col-lg-9 position-relative">
             <div class="border-bottom pt-1 px-2" style="margin-left:-11px;margin-right:-11px;padding-bottom: 3px;">
                 <div class="row">
                     <div class="col-2 pt-2">
+                        <button class="btn btn-outline-dark btn-sm d-inline d-md-none" onclick="$('.folder-div').toggleClass('d-none')">☰</button>
                         <label style="white-space: nowrap;">
                             <input type="checkbox" id="check_all_file" onchange="togglecheckAllByClass()" />
                             All
@@ -79,10 +81,9 @@
                     </div>
                 </div>
             </div>
-            <div style="overflow: auto;position: absolute;padding: 0;
-                        top: 42px;left: 0;right: 0;bottom: 24px;">
+            <div style="overflow: auto;position: absolute;padding: 0;top: 42px;left: 0;right: 0;bottom: 33px;">
                 <table id="files_" class="ml-3  w-100">
-                 @*    @for (var i = 0; i < Model.files.Count; i++)
+                    @*    @for (var i = 0; i < Model.files.Count; i++)
                     {
                         var f = Model.files[i];
                         var j = i;
@@ -110,18 +111,38 @@
                         </tr>
                     }
       *@           
-                </table>        
+                </table>
             </div>
-            <div class="border-top" style="overflow: auto;position: absolute;padding: 0;
-                                           left: 0;right: 0;bottom: 2px;">
-                <span class="me-2"><strong class="me-2 total-file-count">@Model.files.Count</strong>items</span>|
-                <span class="me-2">
-                    @{
-                        var Length = Model.files.Sum(x => x.LengthByte);
-                    }
+            <div class="border-top" style="overflow: auto;position: absolute;padding: 2px 0 0 4px;left: 0;right: 0;bottom: 2px;">
+                <span class="me-3"><strong class="me-2 total-file-count">@Model.files.Count</strong>items</span>
+                
+                <span class="me-3">
+                    @{var Length = Model.files.Sum(x => x.LengthByte);}
                     <strong class="total-file-size"> @(Length < 1024 ? $"{Length}" : Length < 1_000_000 ? $"{(long)(Length / 1024)}" : $"{(long)(Length / 1000000)}")</strong>
                     <span class="total-file-style">@(Length < 1024 ? $"B" : Length < 1_000_000 ? $"Kb" : $"Mb")</span>
                 </span>
+               
+                <div class="d-inline me-3">
+                    sort:
+                    <div class="btn-group btn-group-sm" role="group">
+                        <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_by" id="btnradio1" value="text" autocomplete="off" checked>
+                        <label class="btn btn-outline-dark" for="btnradio1">Name</label>
+
+                        <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_by" id="btnradio3" value="lengthByte" autocomplete="off">
+                        <label class="btn btn-outline-dark" for="btnradio3">Size</label>
+
+                        <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_by" id="btnradio4" value="lastWriteTimeUtc" autocomplete="off">
+                        <label class="btn btn-outline-dark" for="btnradio4">DateTime</label>
+                    </div>
+
+                    <div class="btn-group btn-group-sm" role="group">
+                        <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_type" id="btnradio5" value="Asc" autocomplete="off" checked>
+                        <label class="btn btn-outline-dark" for="btnradio5">Asc</label>
+
+                        <input type="radio" onchange="SortChanged(lastFiles)" class="btn-check py-0" name="sort_type" id="btnradio6" value="Desc" autocomplete="off">
+                        <label class="btn btn-outline-dark" for="btnradio6">Desc</label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -157,7 +178,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal" tabindex="-1" id="uploadModal">
     <div class="modal-dialog">
