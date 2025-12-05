@@ -239,23 +239,24 @@ function SortChanged(files2) {
     let sort_type = $("[name=sort_type]:checked").val();
     if (sort_by && sort_by != 'None') {
         
-        if (sort_by == 'text' ) {
+        if (sort_by == 'text') {
+            debugger
             if (sort_type == 'Asc')
-                files = [...files].sort((first, second) => first[sort_by] > second[sort_by]);
+                files = files.sort((first, second) => first[sort_by].localeCompare(second[sort_by])  );
             else
-                files = [...files].sort((first, second) => first[sort_by] < second[sort_by]);
+                files = files.sort((first, second) => second[sort_by].localeCompare(first[sort_by]));
         }
-        else if ( sort_by == 'lastWriteTimeUtc') {
+        else if (sort_by == 'creationTimeUtc') {
             if (sort_type == 'Asc')
-                files = [...files].sort((first, second) => new Date(first[sort_by]) > new Date(second[sort_by]) );
+                files = files.sort((first, second) => new Date(first[sort_by]) - new Date(second[sort_by]) );
             else
-                files = [...files].sort((first, second) => new Date(second[sort_by]) > new Date(first[sort_by]) );
+                files = files.sort((first, second) => new Date(second[sort_by]) - new Date(first[sort_by]) );
         }
         else {
             if (sort_type == 'Asc')
-                files = [...files].sort((first, second) => first[sort_by] - second[sort_by]);
+                files = files.sort((first, second) => first[sort_by] - second[sort_by]);
             else
-                files = [...files].sort((first, second) => second[sort_by] - first[sort_by]);
+                files = files.sort((first, second) => second[sort_by] - first[sort_by]);
         }
     }
 
@@ -285,7 +286,7 @@ function SortChanged(files2) {
                                         </ul>
                                     </div>
                               </td>
-                              <td><small>${f.creationTimeUtc.substring(0, 19).replace('T', ' ') }</small></td>
+                              <td><small>${f.creationTimeUtc.substring(0, 16).replace('T', ' ') }</small></td>
                               <td><small class="${f.length.replace(/[0-9]/g, '')}">${f.length}</small></td>
                      </tr>`;
     }
