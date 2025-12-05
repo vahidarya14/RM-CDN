@@ -233,8 +233,8 @@ function loadSub(i0, d, onAfterLoad) {
     });
 }
 
-function SortChanged(files2) {
-    let files = [...files2];
+function SortChanged(files) {
+/*    let files = [...files2];*/
     let sort_by = $("[name=sort_by]:checked").val();
     let sort_type = $("[name=sort_type]:checked").val();
     if (sort_by && sort_by != 'None') {
