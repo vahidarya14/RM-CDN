@@ -1,6 +1,8 @@
 using CDN9.Core.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CDN9.Controllers;
 
@@ -12,12 +14,12 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
 
     public async Task<IActionResult> IndexAsync()
     {
-        return View(fileMgmt.SubDir("", tenantFolder,null));
+        return View(fileMgmt.SubDir("", tenantFolder, null));
     }
 
     public IActionResult SubDir(string d, string? search)
     {
-        var dirsFiles = fileMgmt.SubDir(d, tenantFolder,search);
+        var dirsFiles = fileMgmt.SubDir(d, tenantFolder, search);
 
         return Json(new
         {
@@ -30,7 +32,7 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
     public IActionResult CreateDir(string d, string name)
     {
         var dirs = Directory.CreateDirectory($"{rootPath}/{d}/{name}");
-        return SubDir(d,null);
+        return SubDir(d, null);
     }
 
     [HttpPost]
@@ -77,16 +79,16 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
     }
 
     [RequestSizeLimit(long.MaxValue)]
-    public async Task<ActionResult<UploadRes>> UploadAsync([FromForm] string folder, 
-                                                           [FromForm] bool change_img_format, 
+    public async Task<ActionResult<UploadRes>> UploadAsync([FromForm] string folder,
+                                                           [FromForm] bool change_img_format,
                                                            [FromForm] bool add_watermask_to_img,
-                                                           [FromForm] bool make_sm_img_too, 
+                                                           [FromForm] bool make_sm_img_too,
                                                            CancellationToken ct)
-        => Ok(await fileMgmt.UploadFilesAsync(Request.Form.Files, rootPath, folder, change_img_format, add_watermask_to_img, make_sm_img_too,ct));
+        => Ok(await fileMgmt.UploadFilesAsync(Request.Form.Files, rootPath, folder, change_img_format, add_watermask_to_img, make_sm_img_too, ct));
 
 
     [HttpGet("video")]
-    public IActionResult StreamVideo(string f) 
+    public IActionResult StreamVideo(string f)
         => PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot", f), "video/webm", enableRangeProcessing: true);
 
     [HttpGet("audio")]
@@ -106,6 +108,51 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
     [HttpGet("Infos")]
     public IActionResult Infos([FromServices] IOptionsSnapshot<List<string>> replicas)
     {
-        return Ok(new { replicas,version ="1.0.4" });
+        return Ok(new { replicas, version = "1.0.4" });
+    }
+
+    [HttpPost("RemoveReplica")]
+    public IActionResult RemoveReplica( [FromServices] IWebHostEnvironment env, string url)
+    {
+        AppSettingsListUpdater.RemoveFromList(env,"Mirrors", url);
+
+        return Ok(new { version = "1.0.4" });
+    }
+    [HttpPost("AddReplica")]
+    public IActionResult AddReplica( [FromServices] IWebHostEnvironment env, string url)
+    {
+        AppSettingsListUpdater.AddToList(env, "Mirrors", url);
+
+        return Ok(new { version = "1.0.4" });
+    }
+}
+
+
+public static class AppSettingsListUpdater
+{
+    private const string FilePath = "appsettings.env.json";
+
+    public static void AddToList(IWebHostEnvironment env,string section, string newValue)
+    {
+        var json = JObject.Parse(File.ReadAllText(FilePath.Replace("env", env.EnvironmentName)));
+
+        var list = (JArray)json[section];
+        if (!list.Contains(newValue))
+            list.Add(newValue);
+
+        File.WriteAllText($"{env.ContentRootPath}/{FilePath.Replace("env", env.EnvironmentName)}", json.ToString(Formatting.Indented));
+    }
+
+    public static void RemoveFromList(IWebHostEnvironment env, string section, string valueToRemove)
+    {
+        var json = JObject.Parse(File.ReadAllText(FilePath.Replace("env",env.EnvironmentName)));
+
+        var list = (JArray)json[section];
+        var b = list.ToList();
+        b.Remove(valueToRemove);
+
+        json[section] = JArray.FromObject(b);
+
+        File.WriteAllText($"{env.ContentRootPath}/{FilePath.Replace("env", env.EnvironmentName)}", json.ToString(Formatting.Indented));
     }
 }

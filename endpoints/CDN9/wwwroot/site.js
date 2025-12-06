@@ -4,6 +4,8 @@ var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
 var lastFolder = "";
 var lastI0 = 0;
 var lastFiles = [];
+var last_sort_by = 'text';
+var last_sort_dir = 'Asc';
 var baseurl = "home";
 var icon_image = '🖼️';
 var icon_video = '🎞️';
@@ -236,28 +238,30 @@ function loadSub(i0, d, onAfterLoad) {
 function SortChanged(files) {
     /*    let files = [...files2];*/
     let sort_by = $("[name=sort_by]:checked").val();
-    let sort_type = $("[name=sort_type]:checked").val();
-    if (sort_by && sort_by != 'None') {
+    let sort_type = last_sort_dir;//$("[name=sort_type]:checked").val();
+    debugger
+    if (last_sort_by == sort_by) { last_sort_dir = last_sort_dir == 'Asc' ? 'Desc' : 'Asc'; sort_type = last_sort_dir; }
+    else last_sort_by = sort_by;
 
-        if (sort_by == 'text') {
-            if (sort_type == 'Asc')
-                files = files.sort((first, second) => first[sort_by].localeCompare(second[sort_by]));
-            else
-                files = files.sort((first, second) => second[sort_by].localeCompare(first[sort_by]));
-        }
-        else if (sort_by == 'creationTimeUtc') {
-            if (sort_type == 'Asc')
-                files = files.sort((first, second) => new Date(first[sort_by]) - new Date(second[sort_by]));
-            else
-                files = files.sort((first, second) => new Date(second[sort_by]) - new Date(first[sort_by]));
-        }
-        else {
-            if (sort_type == 'Asc')
-                files = files.sort((first, second) => first[sort_by] - second[sort_by]);
-            else
-                files = files.sort((first, second) => second[sort_by] - first[sort_by]);
-        }
+    if (sort_by == 'text') {
+        if (sort_type == 'Asc')
+            files = files.sort((first, second) => first[sort_by].localeCompare(second[sort_by]));
+        else
+            files = files.sort((first, second) => second[sort_by].localeCompare(first[sort_by]));
     }
+    else if (sort_by == 'creationTimeUtc') {
+        if (sort_type == 'Asc')
+            files = files.sort((first, second) => new Date(first[sort_by]) - new Date(second[sort_by]));
+        else
+            files = files.sort((first, second) => new Date(second[sort_by]) - new Date(first[sort_by]));
+    }
+    else {
+        if (sort_type == 'Asc')
+            files = files.sort((first, second) => first[sort_by] - second[sort_by]);
+        else
+            files = files.sort((first, second) => second[sort_by] - first[sort_by]);
+    }
+
 
     let html = '';
     let searchIsNotNull = $('#search_files').val() != '';
@@ -286,8 +290,8 @@ function SortChanged(files) {
                                     </div>
                               </td>
                               ${searchIsNotNull ? `<td><small>${f.path}</small></td>` : ''}
-                              <td><small>${f.creationTimeUtc.substring(0, 16).replace('T', ' ')}</small></td>
                               <td><small class="${f.length.replace(/[0-9]/g, '')} ${f.lengthByte > 8000000 ? 'very_big_file' : f.lengthByte > 4000000 ? 'big_file' : ''}">${f.length}</small></td>
+                              <td><small>${f.creationTimeUtc.substring(0, 16).replace('T', ' ')}</small></td>
                      </tr>`;
     }
     if (files.length == 0)
@@ -371,7 +375,7 @@ function showUploadModal(path, d, i0) {
 function infpModal() {
     $("#showDetailModal").html(`<div class="mb-2 pb-1 px-2 text-left">
         
-    <b>Replica server:</b><br/>
+    <b>Replica server:</b><button class="btn btn-sm btn-link" onclick="addReplica()">➕</button><br/>
     <div id='replica_urls'>--no replicas--</div>
     <br/>
     <b>File ength color:</b><br/>
@@ -384,7 +388,7 @@ function infpModal() {
     <b>version: </b> <span id='version'></span><br/>
     </div>`);
 
-    $(".modal-title").html("? system info");
+    $(".modal-title").html("<div class='border-bottom border-2 border-secondary'>System info</div>");
     detailModal.show();
 
     $.get('/infos').then(data => {
@@ -392,9 +396,24 @@ function infpModal() {
             $("#replica_urls").html('--no replicas--');
         else {
             let replica_urls = '';
-            data.replicas.value.map(x => replica_urls += `<a href='${x}' target='_blank'>${x}</a><br/>`);
+            data.replicas.value.map(x => replica_urls += `<div data-href='${x}'><a href='${x}' target='_blank'>${x}</a> <button class="btn btn-sm btn-link" onclick="removeReplica('${x}')" >🗑️</button></div>`);
             $("#replica_urls").html(replica_urls);
         }
         $("#version").html(data.version);
+    })
+}
+
+function removeReplica(url) {
+    $.post('/RemoveReplica', { url: url }).then(data => {
+        //infpModal();
+        $("[data-href='" + url + "']").remove();
+    })
+}
+
+function addReplica() {
+    let url = "url";
+    $.post('/addReplica', { url }).then(data => {
+        //infpModal();
+        $("#replica_urls").append(`<div data-href='${url}'><a href='${url}' target='_blank'>${url}</a> <button class="btn btn-sm btn-link" >🗑️</button></div>`);
     })
 }
