@@ -239,7 +239,7 @@ function SortChanged(files) {
     /*    let files = [...files2];*/
     let sort_by = $("[name=sort_by]:checked").val();
     let sort_type = last_sort_dir;//$("[name=sort_type]:checked").val();
-    debugger
+    
     if (last_sort_by == sort_by) { last_sort_dir = last_sort_dir == 'Asc' ? 'Desc' : 'Asc'; sort_type = last_sort_dir; }
     else last_sort_by = sort_by;
 
