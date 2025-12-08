@@ -9,6 +9,17 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                       Channel<NewFileUploaded> _notificator,
                       NewFileUploadedRepository newFileUploadedRepository)
 {
+    public long TotalSize(string d, string tenantFolder, ref long totalSize)
+    {
+        var (allDirs2, allFiles2) = SubDir2(d, tenantFolder);
+        totalSize += allFiles2.Sum(x => x.LengthByte);
+
+        foreach (var dir in allDirs2)
+            TotalSize(dir.Path, tenantFolder, ref totalSize);
+
+        return totalSize;
+    }
+
     public (List<D> dirs, List<D> files) SubDir(string d, string tenantFolder, string? search)
     {
 
@@ -19,7 +30,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
             List<D> allFiles = [];
 
             var (allDirs2, allFiles2) = SubDir2(d, tenantFolder);
-            allFiles.AddRange(allFiles2.Where(x =>(x.Path+'/'+ x.Text).Contains(search,StringComparison.InvariantCultureIgnoreCase)));
+            allFiles.AddRange(allFiles2.Where(x => (x.Path + '/' + x.Text).Contains(search, StringComparison.InvariantCultureIgnoreCase)));
             foreach (var dir in allDirs2)
             {
                 var (allDirs3, allFiles3) = SubDir2($"{dir.Path}", tenantFolder);
@@ -59,7 +70,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                 Text = x.Substring(x.LastIndexOf('/') + 1),
                 IsReadOnly = Info.IsReadOnly,
                 Length = Info.Length < 1024 ? $"{Info.Length} B" : Info.Length < 1_000_000 ? $"{Info.Length / 1024} Kb" : $"{Info.Length / 1_000_000} Mb",
-                LengthByte =  Info.Length  ,
+                LengthByte = Info.Length,
                 Attributes = Info.Attributes,
                 Extension = Info.Extension,
                 UnixFileMode = Info.UnixFileMode,
@@ -147,7 +158,7 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
         return res;
     }
 
-    private static async Task<string> UploadAsOrginal(string path, IFormFile formFile, string fileName, string fileN, string fileExt, CancellationToken ct)
+    static async Task<string> UploadAsOrginal(string path, IFormFile formFile, string fileName, string fileN, string fileExt, CancellationToken ct)
     {
         var destinationFile = Path.Combine(path, fileName);
         var i = 1;

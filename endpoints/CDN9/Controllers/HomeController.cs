@@ -116,43 +116,20 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
     {
         AppSettingsListUpdater.RemoveFromList(env,"Mirrors", url);
 
-        return Ok(new { version = "1.0.4" });
+        return Ok(new { IsSuccess = true });
     }
     [HttpPost("AddReplica")]
     public IActionResult AddReplica( [FromServices] IWebHostEnvironment env, string url)
     {
         AppSettingsListUpdater.AddToList(env, "Mirrors", url);
 
-        return Ok(new { version = "1.0.4" });
-    }
-}
-
-
-public static class AppSettingsListUpdater
-{
-    private const string FilePath = "appsettings.env.json";
-
-    public static void AddToList(IWebHostEnvironment env,string section, string newValue)
-    {
-        var json = JObject.Parse(File.ReadAllText(FilePath.Replace("env", env.EnvironmentName)));
-
-        var list = (JArray)json[section];
-        if (!list.Contains(newValue))
-            list.Add(newValue);
-
-        File.WriteAllText($"{env.ContentRootPath}/{FilePath.Replace("env", env.EnvironmentName)}", json.ToString(Formatting.Indented));
+        return Ok(new { IsSuccess = true });
     }
 
-    public static void RemoveFromList(IWebHostEnvironment env, string section, string valueToRemove)
+    [HttpGet("TotalSize")]
+    public IActionResult TotalSize([FromServices] IOptionsSnapshot<List<string>> replicas)
     {
-        var json = JObject.Parse(File.ReadAllText(FilePath.Replace("env",env.EnvironmentName)));
-
-        var list = (JArray)json[section];
-        var b = list.ToList();
-        b.Remove(valueToRemove);
-
-        json[section] = JArray.FromObject(b);
-
-        File.WriteAllText($"{env.ContentRootPath}/{FilePath.Replace("env", env.EnvironmentName)}", json.ToString(Formatting.Indented));
+        long totalSize = 0;
+        return Ok(new { version = fileMgmt .TotalSize("",tenantFolder,ref totalSize) });
     }
 }

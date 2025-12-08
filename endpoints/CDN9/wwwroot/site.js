@@ -172,7 +172,7 @@ function showRenameFileModal(path, name, j) {
                </div>
                <button type="button" onclick="renameFile('${path}',${j})" class="btn btn-primary">Submit</button>
             `)
-    $(".modal-title").html('');
+    $(".modal-title").html(name);
     myModal.show();
 
 
@@ -385,7 +385,10 @@ function infpModal() {
     <small class=" Mb very_big_file"> bigger than 8 Mb</small>
       <br/>
       <br/>
-    <b>version: </b> <span id='version'></span><br/>
+    <b>version: </b> <span id='version'></span>
+    <br/>
+    <br/>
+    <button onclick='TotalSize()'>total</button> <span id='total-size'></span>
     </div>`);
 
     $(".modal-title").html("<div class='border-bottom border-2 border-secondary'>System info</div>");
@@ -415,5 +418,12 @@ function addReplica() {
     $.post('/addReplica', { url }).then(data => {
         //infpModal();
         $("#replica_urls").append(`<div data-href='${url}'><a href='${url}' target='_blank'>${url}</a> <button class="btn btn-sm btn-link" >🗑️</button></div>`);
+    })
+}
+
+function TotalSize() {
+    $.get('/TotalSize').then(data => {
+        let len = data.version;
+        $("#total-size").html(len < 1024 ? len + 'B' : len < 1_000_000 ? Math.ceil(len / 1024) + 'Kb' : Math.ceil(len / 1000000) + 'Mb');
     })
 }
