@@ -9,13 +9,15 @@ public class FileMgmt(IWebHostEnvironment host, IOptionsMonitor<List<string>> mi
                       Channel<NewFileUploaded> _notificator,
                       NewFileUploadedRepository newFileUploadedRepository)
 {
-    public long TotalSize(string d, string tenantFolder, ref long totalSize)
+    public long TotalSize(string d, string tenantFolder, ref long totalSize, ref List<string> sizes)
     {
         var (allDirs2, allFiles2) = SubDir2(d, tenantFolder);
-        totalSize += allFiles2.Sum(x => x.LengthByte);
+        var totalSiz1e = allFiles2.Sum(x => x.LengthByte);
+        totalSize += totalSiz1e;
+        sizes.Add($"{d} = {(totalSiz1e/1024)}");
 
         foreach (var dir in allDirs2)
-            TotalSize(dir.Path, tenantFolder, ref totalSize);
+            TotalSize(dir.Path, tenantFolder, ref totalSize, ref sizes);
 
         return totalSize;
     }

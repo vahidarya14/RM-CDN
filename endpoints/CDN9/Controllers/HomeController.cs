@@ -1,8 +1,10 @@
 using CDN9.Core.Application;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
 
 namespace CDN9.Controllers;
 
@@ -127,9 +129,12 @@ public class HomeController(IWebHostEnvironment host, FileMgmt fileMgmt, ILogger
     }
 
     [HttpGet("TotalSize")]
+    [OutputCache(PolicyName = "Expire30")]
     public IActionResult TotalSize([FromServices] IOptionsSnapshot<List<string>> replicas)
     {
         long totalSize = 0;
-        return Ok(new { version = fileMgmt .TotalSize("",tenantFolder,ref totalSize) });
+        List<string> sizes = [];
+        var x = fileMgmt.TotalSize("", tenantFolder, ref totalSize, ref sizes);
+        return Ok(new { totalSize , sizes });
     }
 }

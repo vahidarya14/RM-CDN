@@ -373,7 +373,7 @@ function showUploadModal(path, d, i0) {
 
 
 function infpModal() {
-    $("#showDetailModal").html(`<div class="mb-2 pb-1 px-2 text-left">
+    $("#showDetailModal").html(`<div class="mb-2 pb-1 pt-4 px-2 text-left">
         
     <b>Replica server:</b><button class="btn btn-sm btn-link" onclick="addReplica()">➕</button><br/>
     <div id='replica_urls'>--no replicas--</div>
@@ -388,7 +388,7 @@ function infpModal() {
     <b>version: </b> <span id='version'></span>
     <br/>
     <br/>
-    <button onclick='TotalSize()'>total</button> <span id='total-size'></span>
+    <b>Total size:</b> <span id='total-size'>--</span> <button onclick='TotalSize()' class="btn py-0 btn-link">calculate</button>
     </div>`);
 
     $(".modal-title").html("<div class='border-bottom border-2 border-secondary'>System info</div>");
@@ -423,7 +423,8 @@ function addReplica() {
 
 function TotalSize() {
     $.get('/TotalSize').then(data => {
-        let len = data.version;
-        $("#total-size").html(len < 1024 ? len + 'B' : len < 1_000_000 ? Math.ceil(len / 1024) + 'Kb' : Math.ceil(len / 1000000) + 'Mb');
+        let len = data.totalSize;
+        $("#total-size").html(len < 1024 ? len + ' B' : len < 1_000_000 ? Math.ceil(len / 1024) + ' Kb' : Math.ceil(len / 1000000) + ' Mb');
+        console.log(data);
     })
 }

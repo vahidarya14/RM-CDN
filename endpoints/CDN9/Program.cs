@@ -59,6 +59,13 @@ builder.Services.AddRateLimiter(x =>
     });
 });
 
+builder.Services.AddOutputCache(options =>
+{
+    options.AddBasePolicy(builder =>        builder.Expire(TimeSpan.FromSeconds(10)));
+    options.AddPolicy("Expire20", builder =>        builder.Expire(TimeSpan.FromSeconds(20)));
+    options.AddPolicy("Expire30", builder =>        builder.Expire(TimeSpan.FromSeconds(30)));
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -70,6 +77,7 @@ if (!app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
+app.UseOutputCache();
 app.UseRouting();
 
 app.UseRateLimiter();
