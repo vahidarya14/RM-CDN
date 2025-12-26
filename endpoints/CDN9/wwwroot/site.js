@@ -193,8 +193,11 @@ function loadSub(i0, d, onAfterLoad) {
         return;
     }
     $(`.d_${i0}`).addClass('open');
+    
     lastFolder = d;
     lastI0 = i0;
+
+
     $("#fullPathOfDir").val(d);
     $("#files_").html('<div class="spinner-border" role="status"></div>');
     let isSearch = $('#search_files').val() != '';
@@ -319,7 +322,21 @@ function fileIcon(extension) {
     return icon_unknown;
 }
 
+function getSelectedFilesandPushToParent() {
+    var checkedValue = '';
+    var inputElements = document.getElementsByClassName('_files');
+
+    for (var i = 0; inputElements[i]; ++i)
+        if (inputElements[i].checked)
+            checkedValue += inputElements[i].value + '**#**';
+    pushSelectedfilesToParent(checkedValue);
+}
+
 function pushSelectedfilesToParent(filePath) {
+
+    setCookie("lastFolder", lastFolder, 365);
+    setCookie("lastI0", lastI0, 365);
+
     window.parent.postMessage(filePath, '*');
     myModal.hide();
 }
@@ -340,17 +357,6 @@ function prevFile(filePath) {
     ind--;
     let f = lastFiles[ind];
     showFile2(`${f.path}`, `${f.text}`, `${f.extension}`, ind);
-}
-
-function getSelectedFilesandPushToParent() {
-    var checkedValue = '';
-    var inputElements = document.getElementsByClassName('_files');
-
-    for (var i = 0; inputElements[i]; ++i)
-        if (inputElements[i].checked)
-            checkedValue += inputElements[i].value + '**#**';
-
-    pushSelectedfilesToParent(checkedValue);
 }
 
 function togglecheckAllByClass() {
@@ -427,4 +433,26 @@ function TotalSize() {
         $("#total-size").html(len < 1024 ? len + ' B' : len < 1_000_000 ? Math.ceil(len / 1024) + ' Kb' : Math.ceil(len / 1000000) + ' Mb');
         console.log(data);
     })
+}
+
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }

@@ -221,7 +221,31 @@
 @section Scripts {
     <script src="/site.js"></script>
     <script>
+
+        let _lastFolder= getCookie("lastFolder");
+        let _lastI0= getCookie("lastI0");
         loadSub(-1,'/');
+
+        if(_lastFolder){         
+            let parts_d=_lastFolder.split("/");
+            let parts_i=_lastI0.split("_");
+
+            parts_d = parts_d.filter(e => e != '');
+            parts_i = parts_i.filter(e => e != '-1');
+
+            let last_d='';
+            let last_i='-1';
+            for (let i=0;i<parts_d.length;i++){
+                if(!parts_d[i]) continue;
+                setTimeout(()=>{
+                        debugger
+                    last_i+=('_'+parts_i[i]);
+                    last_d+=('/'+parts_d[i]);
+                    loadSub(last_i,last_d);
+                },i*300);
+            }  
+        }
+
         function uploadfileToServer() {
 
             var e = $("#lastuploadFileInput")[0];
