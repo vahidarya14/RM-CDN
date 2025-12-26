@@ -19,7 +19,7 @@
                     <button type="button" onclick="addDirectoryModal('','','mainDirecories')" class="btn btn-outline-dark ">➕Directory</button>
                 </div>
             </div> *@
-            <button class="btn btn-link btn-sm d-inline d-md-none float-end" onclick="$('.folder-div').addClass('d-none')">✖</button>
+            <button class="btn btn-link btn-sm d-inline d-md-none position-absolute" style="right: 11px;" onclick="$('.folder-div').addClass('d-none')">✖</button>
             <div class="" style="overflow-y: auto;
                                  height: 98vh;
                                  overflow-x: hidden;">
@@ -67,7 +67,7 @@
                             <input type="checkbox" id="check_all_file" onchange="togglecheckAllByClass()" />
                             All
                         </label>
-                        <button class="btn btn-outline-dark btn-sm ms-2" id="select_all_and_close" onclick="getSelectedFilesandPushToParent()">Push Files<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAlElEQVR4nN3SMQ4BURCA4W9bjZLoRbelO0jECWzNATQSl+EEWkdAKxHiAg6gRTaZQqHY3afyJ5OZN8n8eS9v+DFdbCM3Gj7jGbmWpIMTVnhhgQt6VQU7LKN+oBXnsl+J9kd9Q/9LvzIbzCQwwR5ZU0GGI6Ypt8hxxzBFMgpJkfKcHIeIOQbxxbXIMMYa19iTctn+hTfMuxhJ1kicJwAAAABJRU5ErkJggg==" alt="up3" height="16"></button>
+                        <button class="btn btn-outline-dark btn-sm ms-2" id="select_all_and_close" onclick="getSelectedFilesandPushToParent()"><span class="d-none d-md-inline">Push Files</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAlElEQVR4nN3SMQ4BURCA4W9bjZLoRbelO0jECWzNATQSl+EEWkdAKxHiAg6gRTaZQqHY3afyJ5OZN8n8eS9v+DFdbCM3Gj7jGbmWpIMTVnhhgQt6VQU7LKN+oBXnsl+J9kd9Q/9LvzIbzCQwwR5ZU0GGI6Ypt8hxxzBFMgpJkfKcHIeIOQbxxbXIMMYa19iTctn+hTfMuxhJ1kicJwAAAABJRU5ErkJggg==" alt="up3" height="16"></button>
                     </div>
                     <div class="col-6 text-left d-flex">
                         <div class="input-group ">
