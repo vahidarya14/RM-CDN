@@ -235,6 +235,10 @@ function loadSub(i0, d, onAfterLoad) {
 
         if (onAfterLoad != undefined)
             onAfterLoad();
+
+        
+        if (window.innerWidth<766 && data.dirs.length == 0)
+                $('.folder-div').addClass('d-none');
     });
 }
 

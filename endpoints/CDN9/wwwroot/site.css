@@ -107,3 +107,6 @@ table label, table small {
 .btn-link {
     text-decoration: none;
 }
+.btn-outline-dark:hover img {
+    filter: invert(1);
+}
