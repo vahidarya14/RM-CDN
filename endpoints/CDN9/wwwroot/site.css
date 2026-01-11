@@ -22,12 +22,15 @@ label {
 }
 
 .folder:not(.open)::before {
-    content: "🗀 ";
-    color: darkorange;
+    content: "🗀";
+    color: #c5c5c5;
 }
 
 .folder.open::before {
-    content: "🗁▼";
+    content: "📂";
+    color: darkorange;
+}
+.folder.open {
     color: darkorange;
 }
 
