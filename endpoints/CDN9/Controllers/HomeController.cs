@@ -2,9 +2,6 @@ using CDN9.Core.Application;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
 
 namespace CDN9.Controllers;
 
