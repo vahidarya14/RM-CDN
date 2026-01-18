@@ -220,7 +220,7 @@ function loadSub(i0, d, onAfterLoad) {
                                         <li><a class="dropdown-item" onclick="removeDir('${data.dirs[j].path}','${d}','${i0}')" href="#">🗑️Remove</a></li>
                                     </ul>
                                 </div>
-                                <label class="p-2 ps-0 folder d_${i0}_${j}" onclick="loadSub('${i0}_${j}','${data.dirs[j].path}')" title="${data.dirs[j].text}">${data.dirs[j].text}</label>
+                                <label class="px-2 ps-0 folder d_${i0}_${j}" onclick="loadSub('${i0}_${j}','${data.dirs[j].path}')" title="${data.dirs[j].text}">${data.dirs[j].text}</label>
                             </div>
                             <div id="dir_${i0}_${j}" class="ml-3 ms-3" style="" > </div>
                         </div>`;

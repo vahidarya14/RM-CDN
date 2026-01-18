@@ -23,7 +23,8 @@ label {
 
 .folder:not(.open)::before {
     content: "🗀";
-    color: #c5c5c5;
+    color: #e1ff00;
+    filter: brightness(.9);
 }
 
 .folder.open::before {
@@ -101,9 +102,14 @@ table label, table small {
         min-width:50%;
     }
 }
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 500px) {
     .folder-div {
         min-width: 80%;
+    }
+}
+@media only screen and (max-width: 400px) {
+    .folder-div {
+        min-width: 94%;
     }
 }
 
