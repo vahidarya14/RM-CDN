@@ -276,30 +276,30 @@ function SortChanged(files) {
         let j = i;
         let f = files[j];
         html += `<tr id="file_${j}">
-                               <td class="py-1 px-2" style="display:inline-flex">
-                                   <label style='white-space: nowrap;'>
-                                      <input type="checkbox" value='${f.path}/${f.text}' class="_files" />
-                                      ${fileIcon(f.extension)}
-                                   </label>
-                                   <label onclick="showFile2('${f.path}','${f.text}','${f.extension}',${j})" id="file_lbl_${j}" title="(${f.length}) - ${f.path} " >
-                                        ${f.text}
-                                   </label>
+                    <td class="py-1 px-2" style="display:inline-flex">
+                        <label style='white-space: nowrap;'>
+                            <input type="checkbox" value='${f.path}/${f.text}' class="_files" />
+                            ${fileIcon(f.extension)}
+                        </label>
+                        <label onclick="showFile2('${f.path}','${f.text}','${f.extension}',${j})" id="file_lbl_${j}" title="(${f.length}) - ${f.path} " >
+                            ${f.text}
+                        </label>
                                    
-                                   <div class="dropdown">
-                                        <button class="btn btn-link btn-sm" type="button"  data-bs-toggle="dropdown" >
-                                            ⋮
-                                        </button>
-                                        <ul class="dropdown-menu" >
-                                            <li><a class="dropdown-item" onclick="showRenameFileModal('${f.path}/${f.text}','${f.text}',${j})" href="#">${icon_rename}Rename</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" onclick="removeFile('${f.path}/${f.text}',${j})" href="#">${icon_remove}Remove</a></li>
-                                        </ul>
-                                    </div>
-                              </td>
-                              ${searchIsNotNull ? `<td><small>${f.path}</small></td>` : ''}
-                              <td><small class="${f.length.replace(/[0-9]/g, '')} ${f.lengthByte > 8000000 ? 'very_big_file' : f.lengthByte > 4000000 ? 'big_file' : ''}">${f.length}</small></td>
-                              <td><small>${f.creationTimeUtc.substring(0, 16).replace('T', ' ')}</small></td>
-                     </tr>`;
+                        <div class="dropdown">
+                            <button class="btn btn-link btn-sm" type="button"  data-bs-toggle="dropdown" >
+                                ⋮
+                            </button>
+                            <ul class="dropdown-menu" >
+                                <li><a class="dropdown-item" onclick="showRenameFileModal('${f.path}/${f.text}','${f.text}',${j})" href="#">${icon_rename}Rename</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" onclick="removeFile('${f.path}/${f.text}',${j})" href="#">${icon_remove}Remove</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    ${searchIsNotNull ? `<td><small>${f.path}</small></td>` : ''}
+                    <td><small class="${f.length.replace(/[0-9]/g, '')} ${f.lengthByte > 8000000 ? 'very_big_file' : f.lengthByte > 4000000 ? 'big_file' : ''}">${f.length}</small></td>
+                    <td><small>${f.creationTimeUtc.substring(0, 16).replace('T', ' ')}</small></td>
+                </tr>`;
     }
     if (files.length == 0)
         $("#files_").html(`<div class="ml-4 pb-2">--folder is empty--</div>`);
