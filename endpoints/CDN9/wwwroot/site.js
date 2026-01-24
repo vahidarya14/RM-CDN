@@ -302,7 +302,7 @@ function SortChanged(files) {
                 </tr>`;
     }
     if (files.length == 0)
-        $("#files_").html(`<div class="ml-4 pb-2">--folder is empty--</div>`);
+        $("#files_").html(`<div class="ml-4 pb-2 text-center">--This folder is empty--</div>`);
     else
         $("#files_").html(html);
 
