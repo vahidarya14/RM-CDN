@@ -14,7 +14,7 @@ I’d love for friends and 𝗯𝗮𝗰𝗸𝗲𝗻𝗱/𝗳𝗿𝗼𝗻𝘁𝗲
 - Create directories
 - Delete directories (error occurs if they contain files)
 - Upload multiple files at once
-- Embed a published site using: <iframe src="https://cdn.site.com"></iframe> for integration into main projects
+- Embed a published site using: ``` <iframe src="https://cdn.site.com"></iframe> ``` for integration into main projects
 - Select multiple files simultaneously and push the list to the parent page
 - Sync newly uploaded files across multiple instances using gRPC
 - Apply image watermarks
