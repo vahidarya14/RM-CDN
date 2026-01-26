@@ -21,13 +21,13 @@ I’d love for friends and 𝗯𝗮𝗰𝗸𝗲𝗻𝗱/𝗳𝗿𝗼𝗻𝘁𝗲
 - Convert images to .webp format
 
 𝗙𝗲𝗮𝘁𝘂𝗿𝗲𝘀 𝘁𝗼 𝗔𝗱𝗱:
-• Code refactoring
-• Improved file and directory search
-• Enhanced user interface
-• Multi-language support
-• More watermark customization options
-• PDF preview functionality
-• Caching mechanisms
-• Manual file transfer between instances
-• Settings page
-• ...and more!
+- Code refactoring
+- Improved file and directory search
+- Enhanced user interface
+- Multi-language support
+- More watermark customization options
+- PDF preview functionality
+- Caching mechanisms
+- Manual file transfer between instances
+- Settings page
+- ...and more!
