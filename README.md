@@ -10,24 +10,24 @@ I’d love for friends and 𝗯𝗮𝗰𝗸𝗲𝗻𝗱/𝗳𝗿𝗼𝗻𝘁𝗲
 
 ⚠️𝘋𝘶𝘦 𝘵𝘰 𝘴𝘦𝘷𝘦𝘳𝘦 𝘵𝘪𝘮𝘦 𝘤𝘰𝘯𝘴𝘵𝘳𝘢𝘪𝘯𝘵𝘴 𝘥𝘶𝘳𝘪𝘯𝘨 𝘥𝘦𝘷𝘦𝘭𝘰𝘱𝘮𝘦𝘯𝘵, 𝘸𝘳𝘪𝘵𝘪𝘯𝘨 𝘤𝘭𝘦𝘢𝘯 𝘤𝘰𝘥𝘦 𝘸𝘢𝘴 𝘢 𝘭𝘰𝘸 𝘱𝘳𝘪𝘰𝘳𝘪𝘵𝘺. 𝘈𝘴 𝘢 𝘳𝘦𝘴𝘶𝘭𝘵, 𝘵𝘩𝘦 𝘴𝘰𝘶𝘳𝘤𝘦 𝘤𝘰𝘥𝘦 𝘯𝘦𝘦𝘥𝘴 𝘴𝘪𝘨𝘯𝘪𝘧𝘪𝘤𝘢𝘯𝘵 𝘳𝘦𝘧𝘢𝘤𝘵𝘰𝘳𝘪𝘯𝘨.
 
-𝗖𝘂𝗿𝗿𝗲𝗻𝘁 𝗙𝗲𝗮𝘁𝘂𝗿𝗲𝘀:
-• Create directories
-• Delete directories (error occurs if they contain files)
-• Upload multiple files at once
-• Embed a published site using: <iframe src="https://cdn.site.com"></iframe> for integration into main projects
-• Select multiple files simultaneously and push the list to the parent page
-• Sync newly uploaded files across multiple instances using gRPC
-• Apply image watermarks
-• Convert images to .webp format
+✔️𝗖𝘂𝗿𝗿𝗲𝗻𝘁 𝗙𝗲𝗮𝘁𝘂𝗿𝗲𝘀:
+- Create directories
+- Delete directories (error occurs if they contain files)
+- Upload multiple files at once
+- Embed a published site using: ``` <iframe src="https://cdn.site.com"></iframe> ``` for integration into main projects
+- Select multiple files simultaneously and push the list to the parent page
+- Sync newly uploaded files across multiple instances using gRPC
+- Apply image watermarks
+- Convert images to .webp format
 
-𝗙𝗲𝗮𝘁𝘂𝗿𝗲𝘀 𝘁𝗼 𝗔𝗱𝗱:
-• Code refactoring
-• Improved file and directory search
-• Enhanced user interface
-• Multi-language support
-• More watermark customization options
-• PDF preview functionality
-• Caching mechanisms
-• Manual file transfer between instances
-• Settings page
-• ...and more!
+👉𝗙𝗲𝗮𝘁𝘂𝗿𝗲𝘀 𝘁𝗼 𝗔𝗱𝗱:
+- Code refactoring
+- Improved file and directory search
+- Enhanced user interface
+- Multi-language support
+- More watermark customization options
+- PDF preview functionality
+- Caching mechanisms
+- Manual file transfer between instances
+- Settings page
+- ...and more!
