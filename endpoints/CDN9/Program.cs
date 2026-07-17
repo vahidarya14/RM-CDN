@@ -66,12 +66,6 @@ builder.Services.AddOutputCache(options =>
     options.AddPolicy("Expire30", builder => builder.Expire(TimeSpan.FromSeconds(30)));
 });
 
-List<string> paths = [Path.Combine(builder.Environment.ContentRootPath, "_Plugins"),
-                      Path.Combine(builder.Environment.ContentRootPath, "Themes")];
-foreach (var path in paths)
-    if (!Directory.Exists(path))
-        Directory.CreateDirectory(path);
-
 
 var app = builder.Build();
 
