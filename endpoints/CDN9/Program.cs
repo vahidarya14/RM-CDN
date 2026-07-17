@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Error()
-    .WriteTo.File("./_serilog/log.txt", rollingInterval:RollingInterval.Day)
+    .WriteTo.File("./_serilog/log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 builder.Services.AddSerilog();
 
@@ -52,8 +52,8 @@ builder.Services.AddRateLimiter(x =>
         return RateLimitPartition.GetConcurrencyLimiter(partitionKey: token,
             factory: _ => new ConcurrencyLimiterOptions
             {
-                PermitLimit=1,
-                QueueProcessingOrder=QueueProcessingOrder.NewestFirst,
+                PermitLimit = 1,
+                QueueProcessingOrder = QueueProcessingOrder.NewestFirst,
                 //Window=TimeSpan.FromSeconds(1)
             });
     });
@@ -61,10 +61,17 @@ builder.Services.AddRateLimiter(x =>
 
 builder.Services.AddOutputCache(options =>
 {
-    options.AddBasePolicy(builder =>        builder.Expire(TimeSpan.FromSeconds(10)));
-    options.AddPolicy("Expire20", builder =>        builder.Expire(TimeSpan.FromSeconds(20)));
-    options.AddPolicy("Expire30", builder =>        builder.Expire(TimeSpan.FromSeconds(30)));
+    options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromSeconds(10)));
+    options.AddPolicy("Expire20", builder => builder.Expire(TimeSpan.FromSeconds(20)));
+    options.AddPolicy("Expire30", builder => builder.Expire(TimeSpan.FromSeconds(30)));
 });
+
+List<string> paths = [Path.Combine(builder.Environment.ContentRootPath, "_Plugins"),
+                      Path.Combine(builder.Environment.ContentRootPath, "Themes")];
+foreach (var path in paths)
+    if (!Directory.Exists(path))
+        Directory.CreateDirectory(path);
+
 
 var app = builder.Build();
 
