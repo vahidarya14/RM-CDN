@@ -21,8 +21,8 @@
             </div> *@
             <button class="btn btn-link btn-sm d-inline d-md-none position-absolute bg-white border" style="right: 11px;" onclick="$('.folder-div').addClass('d-none')">✖</button>
             <div class="" style="overflow-y: auto;
-                                 height: 98vh;
-                                 overflow-x: hidden;">
+                height: 98vh;
+                overflow-x: hidden;">
                 <div class="" style="display:inline-flex">
                     @* <div class="dropdown">
                         <button class="btn btn-link btn-sm" type="button" data-bs-toggle="dropdown">
@@ -221,28 +221,50 @@
 @section Scripts {
     <script src="/site.js"></script>
     <script>
+        let sign = getCookie("sign");
+        let invalid = true;
+        if (!sign) {
+            sign = window.prompt();
+            if (sign === null) { }
+            else if (sign.toLowerCase() === "admin") {
+                sign = window.prompt();
+                if (sign.toLowerCase() === "admin") {
+                    setCookie("sign", '1', 1);
+                    invalid = false;
+                }
+            }
+        }
+        else
+            invalid = false;
 
-        let _lastFolder= getCookie("lastFolder");
-        let _lastI0= getCookie("lastI0");
-        loadSub(-1,'/');
+        if (invalid) {
+            const elements = document.getElementsByClassName('container-fluid');
+            while (elements.length > 0) {
+                elements[0].parentNode.removeChild(elements[0]);
+            }
+        }
 
-        if(_lastFolder){         
-            let parts_d=_lastFolder.split("/");
-            let parts_i=_lastI0.split("_");
+        let _lastFolder = getCookie("lastFolder");
+        let _lastI0 = getCookie("lastI0");
+        loadSub(-1, '/');
+
+        if (_lastFolder) {
+            let parts_d = _lastFolder.split("/");
+            let parts_i = _lastI0.split("_");
 
             parts_d = parts_d.filter(e => e != '');
             parts_i = parts_i.filter(e => e != '-1');
 
-            let last_d='';
-            let last_i='-1';
-            for (let i=0;i<parts_d.length;i++){
-                if(!parts_d[i]) continue;
-                setTimeout(()=>{
-                    last_i+=('_'+parts_i[i]);
-                    last_d+=('/'+parts_d[i]);
-                    loadSub(last_i,last_d);
-                },i*300);
-            }  
+            let last_d = '';
+            let last_i = '-1';
+            for (let i = 0; i < parts_d.length; i++) {
+                if (!parts_d[i]) continue;
+                setTimeout(() => {
+                    last_i += ('_' + parts_i[i]);
+                    last_d += ('/' + parts_d[i]);
+                    loadSub(last_i, last_d);
+                }, i * 300);
+            }
         }
 
         function uploadfileToServer() {
@@ -264,12 +286,12 @@
                 data: formData,
                 processData: false,  // tell jQuery not to process the data
                 contentType: false,  // tell jQuery not to set contentType
-                success: function (res) {
+                success: function(res) {
                     uploadModal.hide();
-                    lastFolder="";
-                    loadSub(_lastuploadFilePath.i0.replace("dir_",""), _lastuploadFilePath.path);
+                    lastFolder = "";
+                    loadSub(_lastuploadFilePath.i0.replace("dir_", ""), _lastuploadFilePath.path);
                     _lastuploadFilePath = "";
-                    document.getElementById('lastuploadFileInput').value= null;
+                    document.getElementById('lastuploadFileInput').value = null;
                 }
             });
         }
