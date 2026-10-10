@@ -14,7 +14,8 @@ html {
 }
 
 body {
-  margin-bottom: 0px;
+    margin-bottom: 0px;
+    background-color: #f7f7f4;
 }
 
 label {
