@@ -1,5 +1,4 @@
-﻿using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
+﻿using SkiaSharp;
 
 namespace CDN9.Core.Application;
 
@@ -7,22 +6,50 @@ public static class ImageExt
 {
     public static async Task ResizeImage(this IFormFile file, string saveTo, int width, int height)
     {
-        using var image = await Image.LoadAsync(file.OpenReadStream());
-        image.Mutate(x => x.Resize(width, height));
-        await image.SaveAsync(saveTo);
+        await using var stream = file.OpenReadStream();
+        using var original = SKBitmap.Decode(stream);
+
+        using var resized = original.Resize(new SKImageInfo(width, height), SKSamplingOptions.Default) ?? throw new InvalidOperationException("Image resizing failed.");
+
+        using var image = SKImage.FromBitmap(resized);
+        using var data = image.Encode(SKEncodedImageFormat.Jpeg, 90);
+
+        await using var output = File.Create(saveTo);
+        data.SaveTo(output);
+
+        //using var original = await Image.LoadAsync(file.OpenReadStream());
+        //original.Mutate(x => x.Resize(width, height));
+        //await original.SaveAsync(saveTo);
     }
 
     public static async Task ResizeImage(this IFormFile file, string saveTo, int width)
     {
-        using var image = await Image.LoadAsync(file.OpenReadStream());
-        image.Mutate(x =>
-            x.Resize(new ResizeOptions
-            {
-                Mode = ResizeMode.Max,
-                Size = new Size(width, int.MaxValue)
-            })
-        );
-        await image.SaveAsync(saveTo);
+        await using var stream = file.OpenReadStream();
+        using var original = SKBitmap.Decode(stream);
+
+        // Preserve aspect ratio and don't upscale.
+        float scale = Math.Min(1f, (float)width / original.Width);
+
+        int newWidth = (int)Math.Round(original.Width * scale);
+        int newHeight = (int)Math.Round(original.Height * scale);
+
+        using var resized = original.Resize(new SKImageInfo(newWidth, newHeight), SKSamplingOptions.Default) ?? throw new InvalidOperationException("Image resizing failed.");
+
+        using var image = SKImage.FromBitmap(resized);
+        using var data = image.Encode(SKEncodedImageFormat.Jpeg, 90);
+
+        await using var output = File.Create(saveTo);
+        data.SaveTo(output);
+
+        //using var original = await Image.LoadAsync(file.OpenReadStream());
+        //original.Mutate(x =>
+        //    x.Resize(new ResizeOptions
+        //    {
+        //        Mode = ResizeMode.Max,
+        //        Size = new Size(width, int.MaxValue)
+        //    })
+        //);
+        //await original.SaveAsync(saveTo);
     }
 
     //public static Bitmap ResizeImage(Image imgToResize, int newHeight)
