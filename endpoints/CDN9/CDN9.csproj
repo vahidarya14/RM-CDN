@@ -19,8 +19,8 @@
 		<PackageReference Include="LiteDB" Version="5.0.21" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
-		<PackageReference Include="SkiaSharp" Version="4.155.0" />
-		<PackageReference Include="System.Drawing.Common" Version="10.0.14" />
+		<PackageReference Include="SkiaSharp" Version="4.156.0" />
+		<PackageReference Include="System.Drawing.Common" Version="11.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
